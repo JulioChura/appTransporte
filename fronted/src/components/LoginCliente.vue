@@ -1,10 +1,18 @@
 <script setup>
-import { ref } from 'vue'
-import Cabecera from "../Cabecera.vue"
-defineProps({
-  msg: String,
-})
+import { defineProps, defineEmits } from 'vue';
 
+const props = defineProps({
+  isVisible: {
+    type: Boolean,
+    default: false
+  }
+});
+
+const emit = defineEmits(['cerrarModal']);
+
+const closeModal = () => {
+  emit('cerrarModal');
+};
 </script>
 
 <template>
@@ -29,43 +37,44 @@ defineProps({
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
       </form>
-
     </div>
   </div>
 </template>
 
-
 <style scoped>
-  .modal {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.5);
-  }
-  .modal-content {
-    background-color: #fefefe;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-    max-width: 500px;
-  }
-  .close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-  }
-  .close:hover,
-  .close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-  }
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 500px;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
 </style>

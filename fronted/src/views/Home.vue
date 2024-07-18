@@ -1,30 +1,47 @@
 <script setup>
-    import Cabecera  from "../components/Cabecera.vue"
+  import { ref } from 'vue';
+  import LoginCliente from "../components/LoginCliente.vue";
+  
+  const showModal = ref(false);
+  
+  const mostrarModal = () => {
+    showModal.value = true;
+  };
+  
+  const cerrar = () => {
+    showModal.value = false;
+  };
 </script>
-    
+
 <template>
     <header class="header">
-        <div class="header__nav">
-            <h1 class="header__nav-titulo"><a href="#" class="nombre">AQPTransporte</a></h1>
-            <div class="header__nav__enlaces">
-                <a href="https://github.com/JulioChura" >
-                    <span class="material-symbols-outlined user">
-                        account_circle
-                    </span>
-                </a>
-                
-            </div>
+      <div class="header__nav">
+        <h1 class="header__nav-titulo">
+          <a href="#" class="nombre">AQPTransporte</a>
+        </h1>
+        <div class="header__nav__enlaces">
+          <a href="#">
+            <span class="material-symbols-outlined user" @click="mostrarModal">
+              account_circle
+            </span>
+          </a>
         </div>
-
-        <div class="header__descripcion">
-            <div class="header__descripcion-texto">
-                <h1 class="header__descripcion-titulo">"Conectamos destinos, unimos caminos"</h1>
-                <p class="header__descripcion-mensaje">Nos dedicamos a proporcionar soluciones de transporte seguras, eficientes y confiables para cada uno de nuestros clientes</p>
-            </div>
-        </div>   
+      </div>
+  
+      <div class="header__descripcion">
+        <div class="header__descripcion-texto">
+          <h1 class="header__descripcion-titulo">"Conectamos destinos, unimos caminos"</h1>
+          <p class="header__descripcion-mensaje">
+            Nos dedicamos a proporcionar soluciones de transporte seguras, eficientes y confiables para cada uno de nuestros clientes
+          </p>
+        </div>
+      </div>
     </header>
-</template>
 
+    <LoginCliente :isVisible="showModal" @cerrarModal="cerrar" />
+</template>
+  
+  
 <style scoped>
 
     .header {
