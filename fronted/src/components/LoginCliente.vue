@@ -7,7 +7,7 @@ const password = ref("");
 
 const login = async () => {
   try {
-    const response = await axios.post("http://localhost:8000", {
+    const response = await axios.post("http://localhost:8000/cliente", {
       email: email.value,
       password: password.value
     });
