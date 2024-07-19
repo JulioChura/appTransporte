@@ -2,21 +2,39 @@
 import { defineProps, defineEmits } from 'vue';
 import axios from 'axios';
 
-const email = ref("")
-const password = ref("");
+import { login, setToken } from '../services/authService';
+import { ref } from 'vue';
 
-const login = async () => {
-  try {
-    const response = await axios.post("http://localhost:8000/cliente", {
-      email: email.value,
-      password: password.value
-    });
-    // recibir y almacenar el token (falta implementarlo)
-    console.log(response.data)
-  } catch (error) {
-    console.log(error)
+export default {
+  setup() {
+    const email = ref('');
+    const password = ref('');
+    const error = ref('');
+    const message = ref('');
+
+    const loginUser = async () => {
+      try {
+        const response = await login(email.value, password.value);
+        setToken(response.data.token); // Guarda el token en localStorage
+        message.value = 'Login successful!';
+        error.value = '';
+        // Redirige a la página de inicio o a donde prefieras
+        // router.push('/'); // Necesitas importar y usar el router
+      } catch (err) {
+        error.value = 'Login failed: ' + (err.response ? err.response.data.error : err.message);
+        message.value = '';
+      }
+    };
+
+    return {
+      email,
+      password,
+      error,
+      message,
+      login: loginUser
+    };
   }
-}
+};
 
 const props = defineProps({
   isVisible: {

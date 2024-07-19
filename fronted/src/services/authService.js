@@ -1,23 +1,27 @@
-import axios from "axios"
+import axios from 'axios';
 
-const URL_API = "http://localhost:8000/api/"
+// Configura la URL de tu API Django
+const API_URL = 'http://localhost:8000/api/'; 
 
+// Función para login
 export const login = (email, password) => {
-    return axios.post(URL_API + 'token/', {
-        email: email,
-        password: password
-    }).then(response => {
-        if ( response.data.acces ) {
-            localStorage.setItem('user', JSON.stringfy(response.data));
-        }
-        return response.data
-    })
-}
+    return axios.post(`${API_URL}clientes/login/`, {
+        email,
+        password
+    });
+};
 
+// Almacenar token en localStorage
+export const setToken = (token) => {
+    localStorage.setItem('token', token);
+};
+
+// Obtener token de localStorage
+export const getToken = () => {
+    return localStorage.getItem('token');
+};
+
+// Eliminar token de localStorage
 export const logout = () => {
-    localStorage.removeItem('user')
-}
-
-export const getCurrentUser = () => {
-    return JSON.parse(localStorage.getItem('user'));
+    localStorage.removeItem('token');
 };
