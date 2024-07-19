@@ -2,13 +2,16 @@ from rest_framework import generics
 from django.contrib.auth.models import User
 from rest_framework.response import Response
 
-from .serializer import UserSerializer, ClienteSerializer
+from .serializer import UserSerializer, ClienteLoginSerializer, ClienteSerializer
+
 
 from .models.cliente import Cliente
-from .serializer import ClienteSerializer
 
 from rest_framework import viewsets
 
+from rest_framework.decorators import api_view
+from rest_framework.authtoken.models import Token
+from .models.cliente import Cliente
 
 # Ver todos los Usuarios /api/usuarios
 class UserList(generics.ListCreateAPIView):   
@@ -30,11 +33,16 @@ class UserRegister(generics.CreateAPIView):
         user.is_staff = True  # Asignar el permiso de staff para el inicio de sesion en django
         user.save()
 
-# clientes 
-from rest_framework import viewsets
-from .models.cliente import Cliente
-from .serializer import ClienteSerializer
 
 class ClienteViewSet(viewsets.ModelViewSet):
     queryset = Cliente.objects.all()
     serializer_class = ClienteSerializer
+    
+@api_view(['POST'])
+def cliente_login(request):
+    serializer = ClienteLoginSerializer(data=request.data)
+    if serializer.is_valid():
+        cliente = serializer.validated_data
+        token, created = Token.objects.get_or_create(user=cliente)
+        return Response({'token': token.key})
+    return Response(serializer.errors, status=400)
