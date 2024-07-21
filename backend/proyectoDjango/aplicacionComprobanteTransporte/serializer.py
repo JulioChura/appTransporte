@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
-
+from django.contrib.auth.hashers import make_password
 from .models.cliente import Cliente
 
 class UserSerializer(serializers.ModelSerializer):
@@ -16,21 +16,25 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 
-class ClienteLoginSerializer(serializers.Serializer):
-    email = serializers.EmailField()
-    password = serializers.CharField()
-
-    def validate(self, data):
-        try:
-            cliente = Cliente.objects.get(email=data['email'])
-        except Cliente.DoesNotExist:
-            raise serializers.ValidationError("Email or password is incorrect.")
+class ClienteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Cliente
+        fields = ["email", "password", "Name", "LastName", "DNI", "Cellphone", "id_company"]        
+        extra_kwargs = {
+            'password': {"write_only": True}
+        }
         
-        if not cliente.check_password(data['password']):
-            raise serializers.ValidationError("Email or password is incorrect.")
-        
+    def create(self, validated_data):
+        cliente = Cliente.objects.create(
+            Name=validated_data['Name'],
+            LastName=validated_data['LastName'],
+            DNI=validated_data['DNI'],
+            Cellphone=validated_data['Cellphone'],
+            email=validated_data['email'],
+            id_company=validated_data['id_company'],
+            password=make_password(validated_data['password'])
+        )
         return cliente
-
 class ClienteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cliente

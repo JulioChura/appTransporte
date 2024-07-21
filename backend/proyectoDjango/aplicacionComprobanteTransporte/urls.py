@@ -1,11 +1,7 @@
 from django.urls import path, include
 from rest_framework.authtoken.views import obtain_auth_token
-from .views import UserList, UserDetail, UserRegister, ClienteViewSet, cliente_login
+from .views import UserList, UserDetail, UserRegister, ClienteCreateView
 from rest_framework.routers import DefaultRouter
-
-router = DefaultRouter()
-router.register(r'clientes', ClienteViewSet, basename='cliente')
-
 
 urlpatterns = [
     path('usuarios/', UserList.as_view(), name="user_list"),
@@ -14,7 +10,6 @@ urlpatterns = [
     path('usuarios/login/', obtain_auth_token, name="api_token_auth"),
     # crud para las demas tablas
     
-    path('', include(router.urls)),
-    path('clientes/login/', cliente_login, name='cliente_login'),
+    path('crear/', ClienteCreateView.as_view(), name="crear"),
 
 ]

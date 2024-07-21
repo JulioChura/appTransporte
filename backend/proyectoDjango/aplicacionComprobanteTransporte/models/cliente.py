@@ -7,7 +7,7 @@ class Cliente(models.Model):
     LastName = models.CharField(max_length=100)
     DNI = models.IntegerField()
     Cellphone = models.IntegerField()
-    TravelDate = models.DateField()
+    #TravelDate = models.DateField()
     id_company = models.ForeignKey(Empresa, on_delete=models.CASCADE, related_name='clientes')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

@@ -17,7 +17,7 @@ class EmpresaAdmin(admin.ModelAdmin):
 
 class ClienteAmin(admin.ModelAdmin):
     readonly_fields = ('created_at', 'updated_at')
-    list_display = ("id", "Name", "LastName", "DNI", "Cellphone", "TravelDate", "id_company", "created_at", "updated_at", "email", "password")
+    list_display = ("id", "Name", "LastName", "DNI", "Cellphone", "id_company", "created_at", "updated_at", "email", "password")
 
 class VehiculoAdmin(admin.ModelAdmin):  # Nueva clase VehicleAdmin
     readonly_fields = ('created', 'modified')

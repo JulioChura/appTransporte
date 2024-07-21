@@ -1,8 +1,8 @@
 from rest_framework import generics
 from django.contrib.auth.models import User
 from rest_framework.response import Response
-
-from .serializer import UserSerializer, ClienteLoginSerializer, ClienteSerializer
+from rest_framework.permissions import AllowAny
+from .serializer import UserSerializer, ClienteSerializer
 
 
 from .models.cliente import Cliente
@@ -34,15 +34,7 @@ class UserRegister(generics.CreateAPIView):
         user.save()
 
 
-class ClienteViewSet(viewsets.ModelViewSet):
+class ClienteCreateView(generics.CreateAPIView):
     queryset = Cliente.objects.all()
     serializer_class = ClienteSerializer
-    
-@api_view(['POST'])
-def cliente_login(request):
-    serializer = ClienteLoginSerializer(data=request.data)
-    if serializer.is_valid():
-        cliente = serializer.validated_data
-        token, created = Token.objects.get_or_create(user=cliente)
-        return Response({'token': token.key})
-    return Response(serializer.errors, status=400)
+    permission_classes = [AllowAny] 
