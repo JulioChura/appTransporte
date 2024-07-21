@@ -1,52 +1,48 @@
 <script setup>
-import { defineProps, defineEmits } from 'vue';
+import { ref } from 'vue';
 import axios from 'axios';
 
-import { login, setToken } from '../services/authService';
-import { ref } from 'vue';
-
-export default {
-  setup() {
-    const email = ref('');
-    const password = ref('');
-    const error = ref('');
-    const message = ref('');
-
-    const loginUser = async () => {
-      try {
-        const response = await login(email.value, password.value);
-        setToken(response.data.token); // Guarda el token en localStorage
-        message.value = 'Login successful!';
-        error.value = '';
-        // Redirige a la página de inicio o a donde prefieras
-        // router.push('/'); // Necesitas importar y usar el router
-      } catch (err) {
-        error.value = 'Login failed: ' + (err.response ? err.response.data.error : err.message);
-        message.value = '';
-      }
-    };
-
-    return {
-      email,
-      password,
-      error,
-      message,
-      login: loginUser
-    };
-  }
-};
-
+// Props y emits
 const props = defineProps({
   isVisible: {
     type: Boolean,
     default: false
   }
 });
-
 const emit = defineEmits(['cerrarModal']);
 
+// Estado reactivo
+const email = ref('');
+const password = ref('');
+const error = ref('');
+const message = ref('');
+const userLoggedIn = ref(false);
+
+// Función para cerrar el modal
 const closeModal = () => {
   emit('cerrarModal');
+};
+
+// Función para enviar datos
+const loginUser = async () => {
+  try {
+    // Envía una solicitud POST al backend con email y password
+    const response = await axios.post('/api/login', {
+      email: email.value,
+      password: password.value
+    });
+
+    // Procesa la respuesta
+    setToken(response.data.token); // Guarda el token en localStorage
+    userLoggedIn.value = true; // Marca al usuario como autenticado
+    message.value = 'Login successful!';
+    error.value = '';
+    // Se puede redirigir a inicio o realiza otras acciones
+    // router.push('/'); // importar y usar el router para redirigir
+  } catch (err) {
+    error.value = 'Login failed: ' + (err.response ? err.response.data.error : err.message);
+    message.value = '';
+  }
 };
 </script>
 
@@ -56,7 +52,7 @@ const closeModal = () => {
       <span class="close" @click="closeModal">&times;</span>
       <h2>Login</h2>
       
-      <form @submit.prevent="login">
+      <form @submit.prevent="loginUser">
         <div class="form-group">
           <label for="exampleInputEmail1">Email address</label>
           <input v-model="email" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
@@ -72,6 +68,8 @@ const closeModal = () => {
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
       </form>
+      <p v-if="message">{{ message }}</p>
+      <p v-if="error" class="text-danger">{{ error }}</p>
     </div>
   </div>
 </template>
