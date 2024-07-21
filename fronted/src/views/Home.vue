@@ -1,64 +1,74 @@
 <script setup>
   import { ref } from 'vue';
   import LoginCliente from "../components/LoginCliente.vue";
+  import RegisterCliente from "../components/RegisterCliente.vue";
   
-  const showModal = ref(false);
+  const showModalLogin = ref(false);
+  const showModalRegister = ref(false);
   
-  const mostrarModal = () => {
-    showModal.value = true;
+  const mostrarModalLogin = () => {
+    showModalLogin.value = true;
+  };
+
+  const mostrarModalRegister = () => {
+    showModalRegister.value = true;
   };
   
-  const cerrar = () => {
-    showModal.value = false;
+  const cerrarModalLogin = () => {
+    showModalLogin.value = false;
+  };
+
+  const cerrarModalRegister = () => {
+    showModalRegister.value = false;
   };
 </script>
 
 <template>
-    <header class="header">
-      <div class="header__nav">
-        <h1 class="header__nav-titulo">
-          <a href="#" class="nombre">AQPTransporte</a>
-        </h1>
-        <div class="header__nav__enlaces">
-          <a href="#">
-            <span class="material-symbols-outlined user" @click="mostrarModal">
-              account_circle
-            </span>
-          </a>
-        </div>
+  <header class="header">
+    <div class="header__nav">
+      <h1 class="header__nav-titulo">
+        <a href="#" class="nombre">AQPTransporte</a>
+      </h1>
+      <div class="header__nav__enlaces">
+        <a href="#">
+          <span class="material-symbols-outlined user" @click="mostrarModalLogin">
+            account_circle
+          </span>
+        </a>
       </div>
-  
-      <div class="header__descripcion">
-        <div class="header__descripcion-texto">
-          <h1 class="header__descripcion-titulo">"Conectamos destinos, unimos caminos"</h1>
-          <p class="header__descripcion-mensaje">
-            Nos dedicamos a proporcionar soluciones de transporte seguras, eficientes y confiables para cada uno de nuestros clientes
-          </p>
-        </div>
+    </div>
+
+    <div class="header__descripcion">
+      <div class="header__descripcion-texto">
+        <h1 class="header__descripcion-titulo">"Conectamos destinos, unimos caminos"</h1>
+        <p class="header__descripcion-mensaje">
+          Nos dedicamos a proporcionar soluciones de transporte seguras, eficientes y confiables para cada uno de nuestros clientes
+        </p>
       </div>
-    </header>
+    </div>
+  </header>
 
-    <LoginCliente :isVisible="showModal" @cerrarModal="cerrar" />
+  <LoginCliente :isVisible="showModalLogin" @cerrarModal="cerrarModalLogin" @mostrarRegister="mostrarModalRegister" />
+  <RegisterCliente :isVisible="showModalRegister" @cerrarModal="cerrarModalRegister" />
 
-    <!-- Sección de Contacto -->
-    <section class="contacto">
-      <div class="contacto__contenido">
-        <h2>Contáctanos</h2>
-        <div class="contacto__item">
-          <span class="material-symbols-outlined">location_on</span>
-          <p>Av. Independencia, Arequipa, Perú</p>
-        </div>
-        <div class="contacto__item">
-          <span class="material-symbols-outlined">phone</span>
-          <p>(+51) 958 745 962</p>
-        </div>
-        <div class="contacto__item">
-          <span class="material-symbols-outlined">email</span>
-          <p>contacto@aqptransporte.com</p>
-        </div>
+  <!-- Sección de Contacto -->
+  <section class="contacto">
+    <div class="contacto__contenido">
+      <h2>Contáctanos</h2>
+      <div class="contacto__item">
+        <span class="material-symbols-outlined">location_on</span>
+        <p>Av. Independencia, Arequipa, Perú</p>
       </div>
-    </section>
-
+      <div class="contacto__item">
+        <span class="material-symbols-outlined">phone</span>
+        <p>(+51) 958 745 962</p>
+      </div>
+      <div class="contacto__item">
+        <span class="material-symbols-outlined">email</span>
+        <p>contacto@aqptransporte.com</p>
+      </div>
+    </div>
+  </section>
 </template>
   
   
