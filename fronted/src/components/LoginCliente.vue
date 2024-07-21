@@ -9,7 +9,7 @@ const props = defineProps({
     default: false
   }
 });
-const emit = defineEmits(['cerrarModal']);
+const emit = defineEmits(['cerrarModal', 'mostrarRegister']);
 
 // Estado reactivo
 const email = ref('');
@@ -44,6 +44,12 @@ const loginUser = async () => {
     message.value = '';
   }
 };
+
+// Función para mostrar el formulario de registro
+const mostrarRegister = () => {
+  emit('mostrarRegister');
+  closeModal();
+};
 </script>
 
 <template>
@@ -70,6 +76,7 @@ const loginUser = async () => {
       </form>
       <p v-if="message">{{ message }}</p>
       <p v-if="error" class="text-danger">{{ error }}</p>
+      <p>¿No tienes una cuenta? <a href="#" @click="mostrarRegister">Regístrate aquí</a></p>
     </div>
   </div>
 </template>
