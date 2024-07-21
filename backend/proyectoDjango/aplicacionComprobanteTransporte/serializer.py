@@ -32,6 +32,6 @@ class ClienteSerializer(serializers.ModelSerializer):
             Cellphone=validated_data['Cellphone'],
             email=validated_data['email'],
             id_company=validated_data['id_company'],
-            password=make_password(validated_data['password'])
+            password=validated_data['password']
         )
         return cliente
