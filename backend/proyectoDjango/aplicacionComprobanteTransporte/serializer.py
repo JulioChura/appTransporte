@@ -35,7 +35,3 @@ class ClienteSerializer(serializers.ModelSerializer):
             password=make_password(validated_data['password'])
         )
         return cliente
-class ClienteSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Cliente
-        fields = '__all__' 

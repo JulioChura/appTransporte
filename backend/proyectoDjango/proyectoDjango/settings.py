@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'aplicacionComprobanteTransporte',
     'rest_framework',
     'rest_framework.authtoken',
+    'corsheaders',
 
 ]
 
@@ -58,6 +59,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # para manejar las solictudes
+    'corsheaders.middleware.CorsMiddleware'
 ]
 
 ROOT_URLCONF = 'proyectoDjango.urls'
@@ -133,3 +135,4 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+CORS_ALLOW_ALL_ORIGINS = True

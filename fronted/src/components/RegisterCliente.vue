@@ -30,13 +30,15 @@
   const registerUser = async () => {
     try {
       // Envía una solicitud POST al backend con los datos 
-      const response = await axios.post('/api/register', {
-        name: name.value,
-        lastName: lastName.value,
-        dni: dni.value,
-        cellphone: cellphone.value,
+      const response = await axios.post('http://localhost:8000/api/register/', {
         email: email.value,
-        password: password.value
+        password: password.value,
+        Name: name.value,
+        LastName: lastName.value,
+        DNI: dni.value,
+        Cellphone: cellphone.value,
+        id_company: 1
+        
       });
   
       // Procesa la respuesta

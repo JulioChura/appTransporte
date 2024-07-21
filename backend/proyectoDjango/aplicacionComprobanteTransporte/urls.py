@@ -10,6 +10,6 @@ urlpatterns = [
     path('usuarios/login/', obtain_auth_token, name="api_token_auth"),
     # crud para las demas tablas
     
-    path('crear/', ClienteCreateView.as_view(), name="crear"),
+    path('register/', ClienteCreateView.as_view(), name="crear"),
 
 ]
