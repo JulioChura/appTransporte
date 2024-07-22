@@ -99,7 +99,7 @@ class RegisterTripView(APIView):
             ruta = Ruta.objects.get(id=ruta_id)
             
             voucher = Voucher.objects.create(cliente=cliente, ruta=ruta, cost=cost)
-            serializer = VoucherSerializer1(voucher)
+            serializer = VoucherSerializer(voucher)
             
             return Response({"message": "Viaje registrado exitosamente", "voucher": serializer.data}, status=status.HTTP_201_CREATED)
         except Cliente.DoesNotExist:
