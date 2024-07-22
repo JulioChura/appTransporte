@@ -31,7 +31,7 @@ const closeModal = () => {
 const loginUser = async () => {
   try {
     // Envía una solicitud POST al backend con email y password
-    const response = await axios.post('/api/login', {
+    const response = await axios.post('http://localhost:8000/api/login/', {
       email: email.value,
       password: password.value
     });

@@ -16,10 +16,9 @@ const routes = [
     component: RegisterCliente
   },
   {
-    path: '/destinos/:username',
+    path: '/destinos', 
     name: 'SeleccionDestino',
-    component: SeleccionDestino,
-    props: true
+    component: SeleccionDestino
   }
 ];
 
