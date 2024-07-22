@@ -22,7 +22,7 @@ class UserSerializer(serializers.ModelSerializer):
 class ClienteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cliente
-        fields = ["email", "password", "Name", "LastName", "DNI", "Cellphone", "id_company"]        
+        fields = ["id", "email", "password", "Name", "LastName", "DNI", "Cellphone", "id_company"]        
         extra_kwargs = {
             'password': {"write_only": True}
         }
