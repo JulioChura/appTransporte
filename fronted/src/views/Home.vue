@@ -1,26 +1,26 @@
 <script setup>
-  import { ref } from 'vue';
-  import LoginCliente from "../components/LoginCliente.vue";
-  import RegisterCliente from "../components/RegisterCliente.vue";
-  
-  const showModalLogin = ref(false);
-  const showModalRegister = ref(false);
-  
-  const mostrarModalLogin = () => {
-    showModalLogin.value = true;
-  };
+import { ref } from 'vue';
+import LoginCliente from "../components/LoginCliente.vue";
+import RegisterCliente from "../components/RegisterCliente.vue";
 
-  const mostrarModalRegister = () => {
-    showModalRegister.value = true;
-  };
-  
-  const cerrarModalLogin = () => {
-    showModalLogin.value = false;
-  };
+const showModalLogin = ref(false);
+const showModalRegister = ref(false);
 
-  const cerrarModalRegister = () => {
-    showModalRegister.value = false;
-  };
+const mostrarModalLogin = () => {
+  showModalLogin.value = true;
+};
+
+const mostrarModalRegister = () => {
+  showModalRegister.value = true;
+};
+
+const cerrarModalLogin = () => {
+  showModalLogin.value = false;
+};
+
+const cerrarModalRegister = () => {
+  showModalRegister.value = false;
+};
 </script>
 
 <template>

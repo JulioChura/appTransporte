@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import axios from 'axios';
+import { useRouter } from 'vue-router';
 
 // Props y emits
 const props = defineProps({
@@ -18,6 +19,9 @@ const error = ref('');
 const message = ref('');
 const userLoggedIn = ref(false);
 
+// Configuración del router
+const router = useRouter();
+
 // Función para cerrar el modal
 const closeModal = () => {
   emit('cerrarModal');
@@ -33,12 +37,13 @@ const loginUser = async () => {
     });
 
     // Procesa la respuesta
-    setToken(response.data.token); // Guarda el token en localStorage
+    const { token, name } = response.data;
+    setToken(token); // Guarda el token en localStorage
     userLoggedIn.value = true; // Marca al usuario como autenticado
     message.value = 'Login successful!';
     error.value = '';
-    // Se puede redirigir a inicio o realiza otras acciones
-    // router.push('/'); // importar y usar el router para redirigir
+    // Redirigir a la página de viajes con el nombre de usuario
+    router.push({ name: 'SeleccionDestino', params: { username: name } });
   } catch (err) {
     error.value = 'Login failed: ' + (err.response ? err.response.data.error : err.message);
     message.value = '';
@@ -49,6 +54,11 @@ const loginUser = async () => {
 const mostrarRegister = () => {
   emit('mostrarRegister');
   closeModal();
+};
+
+// Función para guardar el token en localStorage
+const setToken = (token) => {
+  localStorage.setItem('token', token);
 };
 </script>
 
@@ -93,15 +103,16 @@ const mostrarRegister = () => {
   width: 100%;
   height: 100%;
   overflow: auto;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgb(0,0,0);
+  background-color: rgba(0,0,0,0.4);
 }
 
 .modal-content {
   background-color: #fefefe;
+  margin: auto;
   padding: 20px;
   border: 1px solid #888;
   width: 80%;
-  max-width: 500px;
 }
 
 .close {
@@ -116,5 +127,24 @@ const mostrarRegister = () => {
   color: black;
   text-decoration: none;
   cursor: pointer;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-control {
+  width: 100%;
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.form-text {
+  font-size: 0.875rem;
+  color: #6c757d;
+}
+
+.text-danger {
+  color: #dc3545;
 }
 </style>
