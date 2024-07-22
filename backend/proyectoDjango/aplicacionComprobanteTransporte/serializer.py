@@ -45,13 +45,7 @@ class RutaSerializer(serializers.ModelSerializer):
         model = Ruta
         fields = "__all__"
 
-# para el voucher 
-
-# class VoucherSerializer1(serializers.ModelSerializer):
-#     class Meta:
-#         model = Voucher
-#         fields = ['id', 'cost', 'created_at', 'updated_at', 'cliente']
-        
+# para el voucher   
 class VoucherSerializer(serializers.ModelSerializer):
     ruta = RutaSerializer()  # Incluir detalles de la ruta en el serializer del Voucher
 

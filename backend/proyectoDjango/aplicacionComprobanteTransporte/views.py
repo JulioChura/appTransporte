@@ -108,3 +108,16 @@ class RegisterTripView(APIView):
             return Response({"error": "Ruta no encontrada"}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+# historial de viajes
+class HistoryTripView(APIView):
+    def get(self, request, cliente_id):
+        try:
+            cliente = Cliente.objects.get(id=cliente_id)
+            vouchers = Voucher.objects.filter(cliente=cliente)
+            serializer = VoucherSerializer(vouchers, many=True)
+            return Response({"vouchers": serializer.data}, status=status.HTTP_200_OK)
+        except Cliente.DoesNotExist:
+            return Response({"error": "Cliente no encontrado"}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
