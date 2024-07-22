@@ -12,8 +12,10 @@ from .models.cliente import Cliente
 from rest_framework.views import APIView
 from rest_framework import status
 
-from .serializer import RutaSerializer
+from .serializer import *
 from .models.ruta import Ruta
+
+from .models.voucher import Voucher
 
 # Ver todos los Usuarios /api/usuarios
 class UserList(generics.ListCreateAPIView):   
@@ -82,3 +84,27 @@ class RutaListView(APIView):
         serializer = RutaSerializer(rutas, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
+# registar un viaje 
+class RegisterTripView(APIView):
+    def post(self, request):
+        cliente_id = request.data.get('cliente_id')
+        ruta_id = request.data.get('ruta_id')
+        cost = request.data.get('cost')
+
+        if not cliente_id or not ruta_id or not cost:
+            return Response({"error": "Todos los campos son requeridos"}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            cliente = Cliente.objects.get(id=cliente_id)
+            ruta = Ruta.objects.get(id=ruta_id)
+            
+            voucher = Voucher.objects.create(cliente=cliente, ruta=ruta, cost=cost)
+            serializer = VoucherSerializer1(voucher)
+            
+            return Response({"message": "Viaje registrado exitosamente", "voucher": serializer.data}, status=status.HTTP_201_CREATED)
+        except Cliente.DoesNotExist:
+            return Response({"error": "Cliente no encontrado"}, status=status.HTTP_404_NOT_FOUND)
+        except Ruta.DoesNotExist:
+            return Response({"error": "Ruta no encontrada"}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

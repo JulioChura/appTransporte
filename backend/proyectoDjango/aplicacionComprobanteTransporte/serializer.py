@@ -3,6 +3,7 @@ from rest_framework import serializers
 from django.contrib.auth.hashers import make_password
 from .models.cliente import Cliente
 from .models.ruta import Ruta
+from .models.voucher import Voucher
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -43,3 +44,17 @@ class RutaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ruta
         fields = "__all__"
+
+# para el voucher 
+
+class VoucherSerializer1(serializers.ModelSerializer):
+    class Meta:
+        model = Voucher
+        fields = ['id', 'cost', 'created_at', 'updated_at', 'cliente']
+        
+class VoucherSerializer(serializers.ModelSerializer):
+    ruta = RutaSerializer()  # Incluir detalles de la ruta en el serializer del Voucher
+
+    class Meta:
+        model = Voucher
+        fields = ['id', 'cost', 'created_at', 'updated_at', 'cliente', 'ruta']
