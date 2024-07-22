@@ -35,7 +35,9 @@ const loginUser = async () => {
       email: email.value,
       password: password.value
     });
-
+    const user = response.data;
+    localStorage.setItem('user', JSON.stringify(user)); // Guarda el usuario en localStorage
+    userLoggedIn.value = true;
     // Procesa la respuesta
     const { name } = response.data;
     userLoggedIn.value = true; // Marca al usuario como autenticado

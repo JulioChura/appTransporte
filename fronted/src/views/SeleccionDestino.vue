@@ -3,29 +3,46 @@ import { ref, onMounted } from 'vue';
 import axios from 'axios';
 import Voucher from '../components/Voucher.vue'; // Importa el componente Voucher
 
-const username = ref(''); // Obtén el nombre de usuario de la ruta o de alguna otra manera
+const username = ref(''); // Se obtiene el nombre de usuario de la ruta o de alguna otra manera
+const user = ref(null); // Datos del usuario
 const viajes = ref([]);
 const voucherData = ref(null); // Datos del voucher
 const message = ref('');
 const showModal = ref(false); // Estado para mostrar el modal
 
-// Función para obtener los viajes
+// Función para obtener los datos del usuario y los viajes
 onMounted(async () => {
   try {
-    const response = await axios.get('/api/viajes');
+    // Obtener información del usuario
+    const storedUser = JSON.parse(localStorage.getItem('user'));
+    if (storedUser) {
+      user.value = storedUser.cliente;
+      username.value = `${user.value.Name} ${user.value.LastName}`; // Nombre completo del cliente
+    }
+
+    // Obtener los viajes
+    const response = await axios.get('http://localhost:8000/api/rutas/');
     viajes.value = response.data;
   } catch (error) {
-    console.error('Error fetching viajes:', error);
+    console.error('Error fetching data:', error);
   }
 });
 
 // Función para seleccionar un destino
 const selectDestination = async (viaje) => {
+  let cost = parseFloat(viaje.cost);
+  console.log(cost);
   try {
-    const userId = 'user-id-placeholder'; // ID de usuario
-    const response = await axios.post('/api/seleccionar-viaje', {
-      viajeId: viaje.id,
-      userId: userId
+    const userId = user.value?.id; // Recupera el id del usuario
+
+    if (!userId) {
+      console.error('User ID not found');
+      return;
+    }
+    const response = await axios.post('http://localhost:8000/api/registrar_viaje/', {
+      cliente_id: userId,
+      ruta_id: viaje.id,
+      cost: cost
     });
 
     voucherData.value = response.data.voucher;
@@ -34,12 +51,19 @@ const selectDestination = async (viaje) => {
 
   } catch (error) {
     console.error('Error sending viaje selection:', error);
+    message.value = 'Error selecting destination: ' + (error.response ? error.response.data.error : error.message);
   }
 };
 
 // Función para cerrar el modal
 const closeModal = () => {
   showModal.value = false; // Cierra el modal
+};
+
+// Función para obtener las iniciales del nombre del cliente
+const getInitials = (firstName, lastName) => {
+  if (!firstName || !lastName) return '';
+  return firstName.charAt(0) + lastName.charAt(0);
 };
 </script>
 
@@ -61,30 +85,43 @@ const closeModal = () => {
     </div>
   </header>
 
-  <div class="travel-selection">
-    <h1>Selecciona tu destino de viaje, {{ username }}</h1>
-    <div class="destinations">
-      <div 
-        v-for="viaje in viajes" 
-        :key="viaje.id" 
-        class="destination-card"
-        @click="selectDestination(viaje)"
-      >
-        <div class="destination-info">
-          <h2>{{ viaje.startingPlace }} - {{ viaje.destinationPlace }}</h2>
-          <p>Distancia: {{ viaje.distance }} km</p>
-          <p>Paradas: {{ viaje.stops }}</p>
-          <p>Horario: {{ viaje.horario }}</p>
-          <p>Fecha: {{ viaje.fecha }}</p>
-        </div>
+  <div class="profile-section">
+    <div class="profile-info">
+      <div class="profile-avatar">
+        <span class="avatar-initials">{{ getInitials(user?.Name, user?.LastName) }}</span> <!-- Muestra las iniciales del nombre del cliente -->
       </div>
+      <h2>Bienvenido, {{ username }}</h2>
+      <p>Correo: {{ user?.email }}</p>
+      <p>Teléfono: {{ user?.Cellphone }}</p>
+      <p>DNI: {{ user?.DNI }}</p> <!-- Datos adicionales del cliente -->
     </div>
 
-    <!-- Modal para mostrar los datos del voucher -->
-    <div v-if="showModal" class="modal">
-      <div class="modal-content">
-        <span class="close" @click="closeModal">&times;</span>
-        <Voucher :voucher="voucherData" :message="message" />
+    <div class="travel-selection">
+      <h1>Selecciona tu destino de viaje</h1>
+      <div class="destinations">
+        <div 
+          v-for="viaje in viajes" 
+          :key="viaje.id" 
+          class="destination-card"
+        >
+          <div class="destination-info">
+            <h2>{{ viaje.startingPlace }} - {{ viaje.destinationPlace }}</h2>
+            <p>Distancia: {{ viaje.distance }} km</p>
+            <p>Paradas: {{ viaje.stops }}</p>
+            <p>Horario: {{ viaje.horario }}</p>
+            <p>Fecha: {{ viaje.fecha }}</p>
+            <p>Precio: S/{{ viaje.cost }}</p> <!-- Muestra el precio de la ruta -->
+          </div>
+          <button @click="selectDestination(viaje)">Reservar</button> <!-- Botón para seleccionar -->
+        </div>
+      </div>
+
+      <!-- Modal para mostrar los datos del voucher -->
+      <div v-if="showModal" class="modal">
+        <div class="modal-content">
+          <span class="close" @click="closeModal">&times;</span>
+          <Voucher :voucher="voucherData" :message="message" />
+        </div>
       </div>
     </div>
   </div>
@@ -148,8 +185,42 @@ const closeModal = () => {
     color: wheat;
 }
 
-/* Diseño para destinos */
+/* Diseño para perfil y viajes */
+.profile-section {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+.profile-info {
+  flex: 1;
+  max-width: 300px;
+}
+
+.profile-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #007bff;
+  color: white;
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.avatar-initials {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  font-weight: bold;
+}
+
 .travel-selection {
+  flex: 2;
   padding: 20px;
 }
 
@@ -166,6 +237,9 @@ const closeModal = () => {
   padding: 20px;
   cursor: pointer;
   transition: background-color 0.3s;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .destination-card:hover {
@@ -174,6 +248,25 @@ const closeModal = () => {
 
 .destination-info {
   color: #333;
+}
+
+/* Estilos del botón */
+button {
+  background-color: #007bff;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 10px 0;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+button:hover {
+  background-color: #0056b3;
 }
 
 /* Estilos del modal */
