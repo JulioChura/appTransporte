@@ -2,6 +2,8 @@ from django.contrib.auth.models import User
 from rest_framework import serializers
 from django.contrib.auth.hashers import make_password
 from .models.cliente import Cliente
+from .models.ruta import Ruta
+
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -35,3 +37,9 @@ class ClienteSerializer(serializers.ModelSerializer):
             password=validated_data['password']
         )
         return cliente
+
+# rutas 
+class RutaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Ruta
+        fields = "__all__"

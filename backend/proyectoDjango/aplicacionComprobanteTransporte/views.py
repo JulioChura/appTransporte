@@ -12,6 +12,8 @@ from .models.cliente import Cliente
 from rest_framework.views import APIView
 from rest_framework import status
 
+from .serializer import RutaSerializer
+from .models.ruta import Ruta
 
 # Ver todos los Usuarios /api/usuarios
 class UserList(generics.ListCreateAPIView):   
@@ -71,3 +73,12 @@ class LoginView(APIView):
         except Exception as e:
             print(f"Error en login: {str(e)}")
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+
+# obtener la data de las rutas disponibles
+class RutaListView(APIView):
+    def get(self, request):
+        rutas = Ruta.objects.all()
+        serializer = RutaSerializer(rutas, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
