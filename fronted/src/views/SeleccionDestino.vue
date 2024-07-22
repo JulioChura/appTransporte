@@ -1,14 +1,15 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
-import { useRoute } from 'vue-router';
+import Voucher from '../components/Voucher.vue'; // Importa el componente Voucher
 
-const route = useRoute();
-const username = ref(route.params.username);
+const username = ref(''); // Obtén el nombre de usuario de la ruta o de alguna otra manera
 const viajes = ref([]);
-const selectedViaje = ref(null); // Para almacenar el viaje seleccionado
-const message = ref(''); // Para el mensaje de selección
+const voucherData = ref(null); // Datos del voucher
+const message = ref('');
+const showModal = ref(false); // Estado para mostrar el modal
 
+// Función para obtener los viajes
 onMounted(async () => {
   try {
     const response = await axios.get('/api/viajes');
@@ -18,61 +19,75 @@ onMounted(async () => {
   }
 });
 
+// Función para seleccionar un destino
 const selectDestination = async (viaje) => {
-  selectedViaje.value = viaje; // Guarda el viaje seleccionado
-  message.value = `Has elegido el viaje de ${viaje.startingPlace} a ${viaje.destinationPlace}`; 
-
   try {
-    // Enviar datos al backend
-    const userId = 'user-id-placeholder'; // id de usuario
-    await axios.post('/api/seleccionar-viaje', {
+    const userId = 'user-id-placeholder'; // ID de usuario
+    const response = await axios.post('/api/seleccionar-viaje', {
       viajeId: viaje.id,
       userId: userId
     });
+
+    voucherData.value = response.data.voucher;
+    message.value = response.data.message;
+    showModal.value = true; // Muestra el modal
+
   } catch (error) {
     console.error('Error sending viaje selection:', error);
   }
 };
+
+// Función para cerrar el modal
+const closeModal = () => {
+  showModal.value = false; // Cierra el modal
+};
 </script>
 
 <template>
-    <header class="header">
-      <div class="header__nav">
-        <h1 class="header__nav-titulo">
-          <a href="#" class="nombre">AQPTransporte</a>
-        </h1>
-      </div>
-  
-      <div class="header__descripcion">
-        <div class="header__descripcion-texto">
-          <h1 class="header__descripcion-titulo">Destinos</h1>
-          <p class="header__descripcion-mensaje">
-            Viaja con nosotros, Viaja seguro
-          </p>
-        </div>
-      </div>
-    </header>
-  
-    <div class="travel-selection">
-      <h1>Selecciona tu destino de viaje, {{ username }}</h1>
-      <div class="destinations">
-        <div 
-          v-for="viaje in viajes" 
-          :key="viaje.id" 
-          class="destination-card"
-          @click="selectDestination(viaje)"
-        >
-          <div class="destination-info">
-            <h2>{{ viaje.startingPlace }} - {{ viaje.destinationPlace }}</h2>
-            <p>Distancia: {{ viaje.distance }} km</p>
-            <p>Paradas: {{ viaje.stops }}</p>
-            <p>Horario: {{ viaje.horario }}</p>
-            <p>Fecha: {{ viaje.fecha }}</p>
-          </div>
-        </div>
-      </div>
-      <p v-if="message" class="selection-message">{{ message }}</p>
+  <header class="header">
+    <div class="header__nav">
+      <h1 class="header__nav-titulo">
+        <a href="#" class="nombre">AQPTransporte</a>
+      </h1>
     </div>
+
+    <div class="header__descripcion">
+      <div class="header__descripcion-texto">
+        <h1 class="header__descripcion-titulo">Destinos</h1>
+        <p class="header__descripcion-mensaje">
+          Viaja con nosotros, Viaja seguro
+        </p>
+      </div>
+    </div>
+  </header>
+
+  <div class="travel-selection">
+    <h1>Selecciona tu destino de viaje, {{ username }}</h1>
+    <div class="destinations">
+      <div 
+        v-for="viaje in viajes" 
+        :key="viaje.id" 
+        class="destination-card"
+        @click="selectDestination(viaje)"
+      >
+        <div class="destination-info">
+          <h2>{{ viaje.startingPlace }} - {{ viaje.destinationPlace }}</h2>
+          <p>Distancia: {{ viaje.distance }} km</p>
+          <p>Paradas: {{ viaje.stops }}</p>
+          <p>Horario: {{ viaje.horario }}</p>
+          <p>Fecha: {{ viaje.fecha }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal para mostrar los datos del voucher -->
+    <div v-if="showModal" class="modal">
+      <div class="modal-content">
+        <span class="close" @click="closeModal">&times;</span>
+        <Voucher :voucher="voucherData" :message="message" />
+      </div>
+    </div>
+  </div>
 </template>
 
 <style scoped>
@@ -160,9 +175,41 @@ const selectDestination = async (viaje) => {
 .destination-info {
   color: #333;
 }
-.selection-message {
-  margin-top: 20px;
-  font-size: 1.2rem;
-  color: #333;
+
+/* Estilos del modal */
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
 }
 </style>

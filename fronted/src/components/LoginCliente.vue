@@ -37,8 +37,7 @@ const loginUser = async () => {
     });
 
     // Procesa la respuesta
-    const { token, name } = response.data;
-    setToken(token); // Guarda el token en localStorage
+    const { name } = response.data;
     userLoggedIn.value = true; // Marca al usuario como autenticado
     message.value = 'Login successful!';
     error.value = '';
@@ -54,11 +53,6 @@ const loginUser = async () => {
 const mostrarRegister = () => {
   emit('mostrarRegister');
   closeModal();
-};
-
-// Función para guardar el token en localStorage
-const setToken = (token) => {
-  localStorage.setItem('token', token);
 };
 </script>
 
