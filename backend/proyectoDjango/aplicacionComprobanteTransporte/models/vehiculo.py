@@ -22,3 +22,5 @@ class Vehiculo(models.Model):
 
     def __str__(self):
         return "%s %s %s" % (self.license_plate, self.year, self.model)
+
+    

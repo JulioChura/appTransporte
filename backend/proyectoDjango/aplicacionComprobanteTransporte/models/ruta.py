@@ -10,11 +10,13 @@ class Ruta(models.Model):
     stops = models.IntegerField(null=True, blank=True, default=0)
     drivers = models.ForeignKey(Conductor, on_delete=models.CASCADE, related_name='rutas', default=None, null=True, blank=True)
     vehicles = models.ForeignKey(Vehiculo, on_delete=models.CASCADE, related_name='rutas', default=None, null=True, blank=True)
+    horario = models.TimeField(null=False, blank=False)
+    fecha = models.DateField(null=False, blank=False)     
     created_at = models.DateTimeField(editable=False, null=False, auto_now_add=True)
     updated_at = models.DateTimeField(null=False, auto_now=True)
 
     class Meta:
-        ordering = ['startingPlace', 'destinationPlace', 'distance']
+        ordering = ['startingPlace', 'destinationPlace', 'distance', 'horario', 'fecha']
 
     def save(self, *args, **kwargs):
         self.startingPlace = self.startingPlace.upper()
@@ -22,8 +24,6 @@ class Ruta(models.Model):
         return super(Ruta, self).save(*args, **kwargs)
 
     def __str__(self):
-        return "%s %s %s" % (self.startingPlace, self.destinationPlace, self.distance)
-
-
+        return "%s %s %s a las %s el %s" % (self.startingPlace, self.destinationPlace, self.distance, self.horario, self.fecha)
 
 
