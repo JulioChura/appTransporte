@@ -11,10 +11,11 @@ class Ruta(models.Model):
     drivers = models.ForeignKey(Conductor, on_delete=models.CASCADE, related_name='rutas', default=None, null=True, blank=True)
     vehicles = models.ForeignKey(Vehiculo, on_delete=models.CASCADE, related_name='rutas', default=None, null=True, blank=True)
     horario = models.TimeField(null=False, blank=False)
-    fecha = models.DateField(null=False, blank=False)     
+    fecha = models.DateField(null=False, blank=False)
+    cost = models.DecimalField(null=False, blank=False, max_digits=10, decimal_places=2, default=0.0)  # Nuevo campo de costo
     created_at = models.DateTimeField(editable=False, null=False, auto_now_add=True)
     updated_at = models.DateTimeField(null=False, auto_now=True)
-
+    
     class Meta:
         ordering = ['startingPlace', 'destinationPlace', 'distance', 'horario', 'fecha']
 
@@ -25,5 +26,3 @@ class Ruta(models.Model):
 
     def __str__(self):
         return "%s %s %s a las %s el %s" % (self.startingPlace, self.destinationPlace, self.distance, self.horario, self.fecha)
-
-

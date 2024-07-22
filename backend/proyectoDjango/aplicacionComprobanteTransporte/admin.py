@@ -22,7 +22,7 @@ class VehiculoAdmin(admin.ModelAdmin):
 
 class RutaAdmin(admin.ModelAdmin):
     readonly_fields = ('created_at', 'updated_at')
-    list_display = ("id", "startingPlace", "destinationPlace", "distance", "stops", "drivers", "vehicles", "horario", "fecha", "created_at", "updated_at")
+    list_display = ("id", "startingPlace", "destinationPlace", "distance", "stops", "drivers", "vehicles", "horario", "fecha", "cost", "created_at", "updated_at")
     list_filter = ('drivers', 'vehicles', 'horario', 'fecha')
 
 class ConductorAdmin(admin.ModelAdmin):
