@@ -16,9 +16,10 @@ const routes = [
     component: RegisterCliente
   },
   {
-    path: '/destinos',
+    path: '/destinos/:username',
     name: 'SeleccionDestino',
-    component: SeleccionDestino
+    component: SeleccionDestino,
+    props: true
   }
 ];
 
@@ -30,9 +31,4 @@ const router = createRouter({
 
 export default router;
 
-/*
-path: '/destinos/:username',
-    name: 'SeleccionDestino',
-    component: SeleccionDestino,
-    props: true
-    */
+
