@@ -25,6 +25,11 @@ const routes = [
     path: '/perfil', // Nueva ruta para PerfilUsuario.vue
     name: 'PerfilUsuario',
     component: PerfilUsuario
+  },
+  {
+    path: "/contacto",
+    name: "contacto",
+    component: Contacto
   }
 ];
 
