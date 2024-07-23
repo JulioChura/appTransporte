@@ -94,6 +94,10 @@ const getInitials = (firstName, lastName) => {
       <p>Correo: {{ user?.email }}</p>
       <p>Teléfono: {{ user?.Cellphone }}</p>
       <p>DNI: {{ user?.DNI }}</p> <!-- Datos adicionales del cliente -->
+      <!-- Botón para redirigir a PerfilUsuario.vue -->
+      <router-link to="/perfil">
+        <button>Perfil</button>
+      </router-link>
     </div>
 
     <div class="travel-selection">
