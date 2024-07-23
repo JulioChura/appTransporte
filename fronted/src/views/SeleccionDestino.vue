@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
-import Voucher from '../components/Voucher.vue'; // Importa el componente Voucher
+import Voucher from '../components/Voucher.vue'; 
 import Footer from '../components/Footer.vue'; 
 
 const username = ref(''); // Se obtiene el nombre de usuario de la ruta o de alguna otra manera

@@ -2,7 +2,7 @@
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
 import Cabecera from '../components/Cabecera.vue';
-import Footer from '../components/Footer.vue'; // Importar el componente Footer
+import Footer from '../components/Footer.vue'; 
 
 const nombreUsuario = ref('');
 const apellidoUsuario = ref('');
