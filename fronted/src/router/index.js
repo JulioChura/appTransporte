@@ -3,7 +3,7 @@ import Home from '../views/Home.vue';
 import RegisterCliente from '../components/RegisterCliente.vue';
 import SeleccionDestino from '../views/SeleccionDestino.vue';
 import PerfilUsuario from '../views/PerfilUsuario.vue';
-
+import Contacto from '../views/Contacto.vue';
 // Definir las rutas
 const routes = [
   {
