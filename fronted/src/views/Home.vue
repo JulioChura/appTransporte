@@ -2,7 +2,10 @@
 import { ref } from 'vue';
 import LoginCliente from "../components/LoginCliente.vue";
 import RegisterCliente from "../components/RegisterCliente.vue";
-
+import Carrusel from '../components/Carrusel.vue';
+import Valores from '../components/Valores.vue';
+import { useRouter } from 'vue-router';
+const router = useRouter();
 const showModalLogin = ref(false);
 const showModalRegister = ref(false);
 
@@ -21,6 +24,10 @@ const cerrarModalLogin = () => {
 const cerrarModalRegister = () => {
   showModalRegister.value = false;
 };
+
+const redirigirContacto = () => {
+  router.push('/contacto'); 
+};
 </script>
 
 <template>
@@ -30,11 +37,15 @@ const cerrarModalRegister = () => {
         <a href="#" class="nombre">AQPTransporte</a>
       </h1>
       <div class="header__nav__enlaces">
-        <a href="#">
+          <span class="material-symbols-outlined user" @click="redirigirContacto">
+            call
+          </span>
           <span class="material-symbols-outlined user" @click="mostrarModalLogin">
             account_circle
           </span>
-        </a>
+          <span class="material-symbols-outlined user info-icon">
+            info
+          </span>
       </div>
     </div>
 
@@ -51,24 +62,17 @@ const cerrarModalRegister = () => {
   <LoginCliente :isVisible="showModalLogin" @cerrarModal="cerrarModalLogin" @mostrarRegister="mostrarModalRegister" />
   <RegisterCliente :isVisible="showModalRegister" @cerrarModal="cerrarModalRegister" />
 
-  <!-- Sección de Contacto -->
-  <section class="contacto">
-    <div class="contacto__contenido">
-      <h2>Contáctanos</h2>
-      <div class="contacto__item">
-        <span class="material-symbols-outlined">location_on</span>
-        <p>Av. Independencia, Arequipa, Perú</p>
-      </div>
-      <div class="contacto__item">
-        <span class="material-symbols-outlined">phone</span>
-        <p>(+51) 958 745 962</p>
-      </div>
-      <div class="contacto__item">
-        <span class="material-symbols-outlined">email</span>
-        <p>contacto@aqptransporte.com</p>
-      </div>
-    </div>
-  </section>
+  <hr>
+
+  <div class="container">
+    <h2>¡Visita los lugares más fascinantes del Perú!</h2>
+    <Carrusel />
+  </div>
+
+  <div class="container">
+    <Valores />
+  </div>
+  
 </template>
   
   
@@ -145,36 +149,18 @@ const cerrarModalRegister = () => {
     .user {
         font-size: 4rem;
         background-color: black;
-        color: white
+        color: white;
+        cursor:pointer;
     }
-
-    /* Sección de contacto */
-    .contacto {
-      padding: 2rem;
-      background-color: #f9f9f9;
+    .container {
       text-align: center;
+      margin-top: 30px;
+      margin-bottom: 30px;
     }
 
-    .contacto__contenido {
-      max-width: 800px;
-      margin: 0 auto;
+    .info-icon{
+      font-size: 60px;
     }
-
-    .contacto__item {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      margin-bottom: 1rem;
-    }
-
-    .contacto__item span {
-      font-size: 2rem;
-      color: #007bff;
-    }
-
-    .contacto__item p {
-      font-size: 1.2rem;
-      margin: 0;
-    }
-
+   
 </style>
+
