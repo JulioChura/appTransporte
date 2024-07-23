@@ -1,7 +1,8 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
-import Cabecera from '../components/Cabecera.vue'; // Asegúrate de que la ruta sea correcta
+import Cabecera from '../components/Cabecera.vue';
+import Footer from '../components/Footer.vue'; // Importar el componente Footer
 
 const nombreUsuario = ref('');
 const apellidoUsuario = ref('');
@@ -81,6 +82,7 @@ onMounted(async () => {
         </div>
       </div>
     </div>
+    <Footer /> 
   </div>
 </template>
 

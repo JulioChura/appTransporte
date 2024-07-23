@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
 import Voucher from '../components/Voucher.vue'; // Importa el componente Voucher
+import Footer from '../components/Footer.vue'; 
 
 const username = ref(''); // Se obtiene el nombre de usuario de la ruta o de alguna otra manera
 const user = ref(null); // Datos del usuario
@@ -68,70 +69,81 @@ const getInitials = (firstName, lastName) => {
 </script>
 
 <template>
-  <header class="header">
-    <div class="header__nav">
-      <h1 class="header__nav-titulo">
-        <a href="#" class="nombre">AQPTransporte</a>
-      </h1>
-    </div>
-
-    <div class="header__descripcion">
-      <div class="header__descripcion-texto">
-        <h1 class="header__descripcion-titulo">Destinos</h1>
-        <p class="header__descripcion-mensaje">
-          Viaja con nosotros, Viaja seguro
-        </p>
+  <div class="page-container">
+    <header class="header">
+      <div class="header__nav">
+        <h1 class="header__nav-titulo">
+          <a href="#" class="nombre">AQPTransporte</a>
+        </h1>
       </div>
-    </div>
-  </header>
 
-  <div class="profile-section">
-    <div class="profile-info">
-      <div class="profile-avatar">
-        <span class="avatar-initials">{{ getInitials(user?.Name, user?.LastName) }}</span> <!-- Muestra las iniciales del nombre del cliente -->
+      <div class="header__descripcion">
+        <div class="header__descripcion-texto">
+          <h1 class="header__descripcion-titulo">Destinos</h1>
+          <p class="header__descripcion-mensaje">
+            Viaja con nosotros, Viaja seguro
+          </p>
+        </div>
       </div>
-      <h2>Bienvenido, {{ username }}</h2>
-      <p>Correo: {{ user?.email }}</p>
-      <p>Teléfono: {{ user?.Cellphone }}</p>
-      <p>DNI: {{ user?.DNI }}</p> <!-- Datos adicionales del cliente -->
-      <!-- Botón para redirigir a PerfilUsuario.vue -->
-      <router-link to="/perfil">
-        <button>Perfil</button>
-      </router-link>
-    </div>
+    </header>
 
-    <div class="travel-selection">
-      <h1>Selecciona tu destino de viaje</h1>
-      <div class="destinations">
-        <div 
-          v-for="viaje in viajes" 
-          :key="viaje.id" 
-          class="destination-card"
-        >
-          <div class="destination-info">
-            <h2>{{ viaje.startingPlace }} - {{ viaje.destinationPlace }}</h2>
-            <p>Distancia: {{ viaje.distance }} km</p>
-            <p>Paradas: {{ viaje.stops }}</p>
-            <p>Horario: {{ viaje.horario }}</p>
-            <p>Fecha: {{ viaje.fecha }}</p>
-            <p>Precio: S/{{ viaje.cost }}</p> <!-- Muestra el precio de la ruta -->
+    <div class="profile-section">
+      <div class="profile-info">
+        <div class="profile-avatar">
+          <span class="avatar-initials">{{ getInitials(user?.Name, user?.LastName) }}</span> <!-- Muestra las iniciales del nombre del cliente -->
+        </div>
+        <h2>Bienvenido, {{ username }}</h2>
+        <p>Correo: {{ user?.email }}</p>
+        <p>Teléfono: {{ user?.Cellphone }}</p>
+        <p>DNI: {{ user?.DNI }}</p> <!-- Datos adicionales del cliente -->
+        <!-- Botón para redirigir a PerfilUsuario.vue -->
+        <router-link to="/perfil">
+          <button>Perfil</button>
+        </router-link>
+      </div>
+
+      <div class="travel-selection">
+        <h1>Selecciona tu destino de viaje</h1>
+        <div class="destinations">
+          <div 
+            v-for="viaje in viajes" 
+            :key="viaje.id" 
+            class="destination-card"
+          >
+            <div class="destination-info">
+              <h2>{{ viaje.startingPlace }} - {{ viaje.destinationPlace }}</h2>
+              <p>Distancia: {{ viaje.distance }} km</p>
+              <p>Paradas: {{ viaje.stops }}</p>
+              <p>Horario: {{ viaje.horario }}</p>
+              <p>Fecha: {{ viaje.fecha }}</p>
+              <p>Precio: S/{{ viaje.cost }}</p> <!-- Muestra el precio de la ruta -->
+            </div>
+            <button @click="selectDestination(viaje)">Reservar</button> <!-- Botón para seleccionar -->
           </div>
-          <button @click="selectDestination(viaje)">Reservar</button> <!-- Botón para seleccionar -->
         </div>
-      </div>
 
-      <!-- Modal para mostrar los datos del voucher -->
-      <div v-if="showModal" class="modal">
-        <div class="modal-content">
-          <span class="close" @click="closeModal">&times;</span>
-          <Voucher :voucher="voucherData" :message="message" />
+        <!-- Modal para mostrar los datos del voucher -->
+        <div v-if="showModal" class="modal">
+          <div class="modal-content">
+            <span class="close" @click="closeModal">&times;</span>
+            <Voucher :voucher="voucherData" :message="message" />
+          </div>
         </div>
       </div>
     </div>
+    
+    <Footer />
   </div>
 </template>
 
 <style scoped>
+/* Estilo general de la página */
+.page-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
 /* Diseño de inicio */
 .header {
     margin: 0;
@@ -191,6 +203,7 @@ const getInitials = (firstName, lastName) => {
 
 /* Diseño para perfil y viajes */
 .profile-section {
+  flex: 1;
   display: flex;
   justify-content: space-between;
   padding: 20px;
@@ -308,5 +321,10 @@ button:hover {
   color: black;
   text-decoration: none;
   cursor: pointer;
+}
+
+/* Estilo del Footer */
+footer {
+  margin-top: auto;
 }
 </style>
