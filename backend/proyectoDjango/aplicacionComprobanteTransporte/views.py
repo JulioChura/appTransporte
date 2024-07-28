@@ -17,6 +17,9 @@ from .models.ruta import Ruta
 
 from .models.voucher import Voucher
 
+import mercadopago
+from django.http import JsonResponse
+
 # Ver todos los Usuarios /api/usuarios
 class UserList(generics.ListCreateAPIView):   
     queryset = User.objects.all()
@@ -121,3 +124,37 @@ class HistoryTripView(APIView):
             return Response({"error": "Cliente no encontrado"}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+# apartir de aca se va a la rama principal
+# access token de producción
+# sdk = mercadopago.SDK("TEST-1462140131147037-072711-23c541a04e4dd7e34c2aa3748ea63d4d-1920731848")
+sdk = mercadopago.SDK("APP_USR-1133984688578946-072802-0a0a445f6db252514ec9ca9a5909bc5e-1921641584")
+def create_preference(request, precio, ruta, ruta_id, user_id):
+    title = ruta.replace('-', ' ').title()
+    success_url = f"http://localhost:5173/registrado?ruta={ruta_id}&cost={precio}&user_id={user_id}"
+
+    preference_data = {
+        "items": [
+            {
+                "title": title,
+                "quantity": 1,
+                "unit_price": float(precio),
+            }
+        ],
+        "metadata": {
+            "ruta": ruta_id,
+            "user_id": user_id
+        },
+        "back_urls": {
+            "success": success_url,
+            "failure": "http://yourdomain.com/failure",
+            "pending": "http://yourdomain.com/pending"
+        },
+        "auto_return": "approved"
+    }
+    
+    preference_response = sdk.preference().create(preference_data)
+    preference = preference_response["response"]
+    
+    return JsonResponse(preference)

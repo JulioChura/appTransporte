@@ -44,7 +44,7 @@ const loginUser = async () => {
     message.value = 'Login successful!';
     error.value = '';
     // Redirigir a la página de viajes con el nombre de usuario
-    router.push({ name: 'SeleccionDestino', params: { username: name } });
+    router.push({ name: 'SeleccionDestino', params: { username: name } }); //  decidir a donde se va ir si, al perfil o defrente a comprar el pasaje
   } catch (err) {
     error.value = 'Login failed: ' + (err.response ? err.response.data.error : err.message);
     message.value = '';

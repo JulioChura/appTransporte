@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
-import Cabecera from '../components/Cabecera.vue';
+import Header from '../components/Header.vue';
 import Footer from '../components/Footer.vue'; 
 
 const nombreUsuario = ref('');
@@ -47,7 +47,7 @@ onMounted(async () => {
 
 <template>
   <div class="container">
-    <Cabecera />
+    <Header />
     <div class="perfil-contenedor">
       <div class="perfil-izquierda">
         <div class="perfil-info">

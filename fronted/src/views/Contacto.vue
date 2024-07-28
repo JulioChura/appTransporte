@@ -1,12 +1,13 @@
- <script setup>
-  import { ref } from 'vue'
-  import Cabecera from '../components/Cabecera.vue';
-  
-  </script>
-  
-  <template>
-  <Cabecera/>
-  
+<script setup>
+import { ref } from 'vue'
+import FooterVue from '../components/Footer.vue';
+import Header from '../components/Header.vue';
+
+</script>
+
+<template>
+  <Header />
+
   <section class="contacto">
     <div class="contacto__contenido">
       <h2>Contáctanos</h2>
@@ -25,39 +26,40 @@
     </div>
   </section>
 
-  </template>
-  
-  <style scoped>
-  .contacto {
-    padding: 2rem;
-    background-color: #f9f9f9;
-    text-align: center;
-  }
+    <FooterVue />
+</template>
 
-  .contacto__contenido {
-    max-width: 800px;
-    margin: 0 auto;
-  }
+<style scoped>
+.contacto {
+  padding: 2rem;
+  background-color: #f9f9f9;
+  text-align: center;
+}
 
-  .contacto__item {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 1rem;
-  }
+.contacto__contenido {
+  max-width: 800px;
+  margin: 0 auto;
+}
 
-  .contacto__item span {
-    font-size: 2rem;
-    color: #007bff;
-  }
+.contacto__item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
 
-  .contacto__item p {
-    font-size: 1.2rem;
-    margin: 0;
-  }
-  .container {
-    margin: 0 auto;
-    margin-top: 30px;
-  }
-  </style>
-  
+.contacto__item span {
+  font-size: 2rem;
+  color: #007bff;
+}
+
+.contacto__item p {
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+.container {
+  margin: 0 auto;
+  margin-top: 30px;
+}
+</style>
