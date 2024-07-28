@@ -4,9 +4,20 @@
 <template>
     <header class="header">
         <div class="header__nav">
-            <h1 class="header__nav-titulo"><a href="#" class="nombre">ViajesAQP</a></h1>
-            <div class="header__nav__enlaces">
-            </div>
+          <h1 class="header__nav-titulo">
+            <router-link :to="{ name: 'Home' }" class="nombre">Viajes<span class="logo">AQP</span></router-link>
+          </h1>
+          <div class="header__nav__enlaces">
+            <span class="material-symbols-outlined user" @click="redirigirContacto">
+              call
+            </span>
+            <span class="material-symbols-outlined user" @click="mostrarModalLogin">
+              account_circle
+            </span>
+            <span class="material-symbols-outlined user info-icon">
+              info
+            </span>
+        </div>
         </div>
     </header>
 </template>
@@ -46,5 +57,9 @@
     height: 50px;
   }
 
+  .logo {
+    color: rgb(65, 6, 6);
+    font-weight: bold;
+  }
   
 </style>
