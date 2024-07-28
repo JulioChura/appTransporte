@@ -1,13 +1,12 @@
 from rest_framework import generics
 from django.contrib.auth.models import User
 from rest_framework.response import Response
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from .serializer import UserSerializer, ClienteSerializer
 from .models.cliente import Cliente
 from rest_framework import viewsets
 from rest_framework.decorators import api_view
 from rest_framework.authtoken.models import Token
-from .models.cliente import Cliente
 
 from rest_framework.views import APIView
 from rest_framework import status
@@ -21,16 +20,19 @@ from .models.voucher import Voucher
 class UserList(generics.ListCreateAPIView):   
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    permission_classes = [IsAuthenticated] # Añadir esta línea para requerir autenticación
     
 #Detalles de usuario /api/usuarios/#
 class UserDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    permission_classes = [IsAuthenticated] # Añadir esta línea para requerir autenticación
     
 #Registro /api/usuarios/registro
 class UserRegister(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    permission_classes = [AllowAny] # Permitir el registro sin autenticación
     
     def perform_create(self, serializer):
         user = serializer.save()
@@ -45,7 +47,33 @@ class ClienteCreateView(generics.CreateAPIView):
     serializer_class = ClienteSerializer
     permission_classes = [AllowAny] 
 
+    #---------------Modificado
+
+    def perform_create(self, serializer):
+        cliente = serializer.save()
+        user = User.objects.create_user(
+            username=cliente.email,
+            email=cliente.email,
+            password=self.request.data['password']
+        )
+        cliente.user = user
+        cliente.save()
+
+        # Crear un token para el cliente
+        token, created = Token.objects.get_or_create(user=user)
+
+        self.token = token.key
+
+    def create(self, request, *args, **kwargs):
+        response = super().create(request, *args, **kwargs)
+        response.data['token'] = self.token
+        return response
+
+    #----------------------------
+
 class LoginView(APIView):
+    permission_classes = [AllowAny] # Permitir el login sin autenticación
+
     def post(self, request):
         email = request.data.get('email')
         password = request.data.get('password')
@@ -65,9 +93,19 @@ class LoginView(APIView):
             print(f"Verificando contraseña para cliente: {cliente.email}")
 
             if cliente.verify_password(password):
+                
+                #eliminar token
+                Token.objects.filter(user=cliente.user).delete()
+                #crear token
+                token, created = Token.objects.get_or_create(user=cliente.user)
+
                 serializer = ClienteSerializer(cliente)
                 print("Login exitoso")
-                return Response({"message": "Login successful", "cliente": serializer.data}, status=status.HTTP_200_OK)
+                return Response({
+                    "message": "Login successful", 
+                    "cliente": serializer.data,
+                    "token": token.key
+                    }, status=status.HTTP_200_OK)
             else:
                 print("Contraseña incorrecta")
                 return Response({"error": "Invalid email or password"}, status=status.HTTP_401_UNAUTHORIZED)
@@ -79,6 +117,8 @@ class LoginView(APIView):
 
 # obtener la data de las rutas disponibles
 class RutaListView(APIView):
+    permission_classes = [IsAuthenticated]  # Añadir esta línea para requerir autenticación
+
     def get(self, request):
         rutas = Ruta.objects.all()
         serializer = RutaSerializer(rutas, many=True)
@@ -86,6 +126,8 @@ class RutaListView(APIView):
     
 # registar un viaje 
 class RegisterTripView(APIView):
+    permission_classes = [IsAuthenticated]  # Añadir esta línea para requerir autenticación
+
     def post(self, request):
         cliente_id = request.data.get('cliente_id')
         ruta_id = request.data.get('ruta_id')
@@ -111,6 +153,8 @@ class RegisterTripView(APIView):
 
 # historial de viajes
 class HistoryTripView(APIView):
+    permission_classes = [IsAuthenticated]  # Añadir esta línea para requerir autenticación
+
     def get(self, request, cliente_id):
         try:
             cliente = Cliente.objects.get(id=cliente_id)

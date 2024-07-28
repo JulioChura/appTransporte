@@ -5,6 +5,7 @@ from .models.cliente import Cliente
 from .models.ruta import Ruta
 from .models.voucher import Voucher
 
+from rest_framework.authtoken.models import Token
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -52,3 +53,11 @@ class VoucherSerializer(serializers.ModelSerializer):
     class Meta:
         model = Voucher
         fields = ['id', 'cost', 'created_at', 'updated_at', 'cliente', 'ruta']
+
+# Serializer para el token
+class TokenSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True)
+
+    class Meta:
+        model = Token
+        fields = ['key', 'user']
