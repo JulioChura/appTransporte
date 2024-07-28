@@ -17,6 +17,9 @@ urlpatterns = [
     path('clientes/<int:cliente_id>/historial/', HistoryTripView.as_view(), name='cliente-historial-viajes'),
     
     # debe ir a la rama principal este cambio
-    path('create_preference/<int:precio>/<str:ruta>/', create_preference, name='create_preference'),
+    path('create_preference/<int:precio>/<str:ruta>/<int:ruta_id>/<int:user_id>/', create_preference, name='create_preference'),
+    #path('create_preference/<int:precio>/<int:ruta_id>/', create_preference, name='create_preference'),
+    #path('payment_notification/', PaymentNotificationView.as_view(), name='payment_notification'),
+    path('registrar_viaje/', RegisterTripView.as_view(), name='register_trip'),
 
 ]

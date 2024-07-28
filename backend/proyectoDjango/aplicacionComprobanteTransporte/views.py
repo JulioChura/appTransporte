@@ -130,19 +130,24 @@ class HistoryTripView(APIView):
 # access token de producción
 sdk = mercadopago.SDK("TEST-1462140131147037-072711-23c541a04e4dd7e34c2aa3748ea63d4d-1920731848")
 
-def create_preference(request, precio, ruta):
-    
+def create_preference(request, precio, ruta, ruta_id, user_id):
     title = ruta.replace('-', ' ').title()
+    success_url = f"http://localhost:5173/registrado?ruta={ruta_id}&cost={precio}&user_id={user_id}"
+
     preference_data = {
         "items": [
             {
                 "title": title,
                 "quantity": 1,
-                "unit_price": precio,
+                "unit_price": float(precio),
             }
         ],
+        "metadata": {
+            "ruta": ruta_id,
+            "user_id": user_id
+        },
         "back_urls": {
-            "success": "http://localhost:5173/",
+            "success": success_url,
             "failure": "http://yourdomain.com/failure",
             "pending": "http://yourdomain.com/pending"
         },
@@ -153,5 +158,3 @@ def create_preference(request, precio, ruta):
     preference = preference_response["response"]
     
     return JsonResponse(preference)
-
-
