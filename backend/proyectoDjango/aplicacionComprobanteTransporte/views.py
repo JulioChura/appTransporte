@@ -17,6 +17,9 @@ from .models.ruta import Ruta
 
 from .models.voucher import Voucher
 
+
+
+
 # Ver todos los Usuarios /api/usuarios
 class UserList(generics.ListCreateAPIView):   
     queryset = User.objects.all()

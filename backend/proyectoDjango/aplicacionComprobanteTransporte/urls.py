@@ -3,6 +3,7 @@ from rest_framework.authtoken.views import obtain_auth_token
 from .views import UserList, UserDetail, UserRegister, ClienteCreateView, LoginView, RutaListView, RegisterTripView, HistoryTripView
 from rest_framework.routers import DefaultRouter
 
+from .views import *
 urlpatterns = [
     path('usuarios/', UserList.as_view(), name="user_list"),
     path('usuarios/<int:pk>/', UserDetail.as_view(), name="user_detail"),
@@ -14,4 +15,5 @@ urlpatterns = [
     path('rutas/', RutaListView.as_view(), name='ruta_list'),
     path('registrar_viaje/', RegisterTripView.as_view(), name='register_trip'),
     path('clientes/<int:cliente_id>/historial/', HistoryTripView.as_view(), name='cliente-historial-viajes'),
+
 ]
