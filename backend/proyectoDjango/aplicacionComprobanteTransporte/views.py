@@ -87,7 +87,7 @@ class RutaListView(APIView):
         serializer = RutaSerializer(rutas, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
-
+# registar un viaje 
 class RegisterTripView(APIView):
     def post(self, request):
         cliente_id = request.data.get('cliente_id')
@@ -101,10 +101,6 @@ class RegisterTripView(APIView):
             cliente = Cliente.objects.get(id=cliente_id)
             ruta = Ruta.objects.get(id=ruta_id)
             
-            # Verificar si el viaje ya está registrado
-            if Voucher.objects.filter(cliente=cliente, ruta=ruta).exists():
-                return Response({"message": "Este viaje ya ha sido registrado."}, status=status.HTTP_200_OK)
-            
             voucher = Voucher.objects.create(cliente=cliente, ruta=ruta, cost=cost)
             serializer = VoucherSerializer(voucher)
             
@@ -115,6 +111,7 @@ class RegisterTripView(APIView):
             return Response({"error": "Ruta no encontrada"}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 # historial de viajes
 class HistoryTripView(APIView):
     def get(self, request, cliente_id):
