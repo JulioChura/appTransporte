@@ -7,7 +7,7 @@
     </div> -->
     <div class="container">
       Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste, magnam. Ea itaque atque deleniti odit nemo amet est laboriosam ipsam officia fuga, quas veniam ad! Eveniet saepe architecto optio minus.
-      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quo sint officia, rem temporibus similique ipsa debitis dolorem, vitae ratione, doloribus dicta eligendi ad quae possimus id magnam deleniti odit expedita?
+      lore
     </div>
   </div>
 </template>

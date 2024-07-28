@@ -1,80 +1,76 @@
 <template>
     <header class="header">
-      <div class="header__nav">
-        <h1 class="header__nav-titulo">
-          <router-link to="/" class="nombre">AQPTransporte</router-link>
-        </h1>
-        <div class="header__nav__enlaces">
-          <span class="material-symbols-outlined user" @click="redirigirContacto">
-            <router-link :to="{ name: 'SobreNosotros' }" class="nombre">call</router-link>
-          </span>
-          <span v-if="!isAuthenticated" class="material-symbols-outlined user" @click="mostrarModalLogin">
-            account_circle
-          </span>
-          <span v-if="isAuthenticated" class="material-symbols-outlined user" @click="cerrarSesion">
-            logout
-          </span>
-          <span class="material-symbols-outlined user info-icon">
-            info
-          </span>
+        <!-- Barra de nav donde estan los iconos de sobreNosotros, Login, Contacto -->
+        <div class="header__nav">
+            <h1 class="header__nav-titulo">
+                <router-link to="/" class="nombre">AQPTransporte</router-link>
+            </h1>
+            <div class="header__nav__enlaces">
+
+                <router-link :to="{ name: 'SobreNosotros' }" class="nombre"><span
+                        class="material-symbols-outlined icons call">info</span></router-link>
+                <router-link :to="{ name: 'contacto' }"> <span
+                        class="material-symbols-outlined icons">call</span></router-link>
+
+                <span class="material-symbols-outlined icons" @click="mostrarModalLogin">
+                        account_circle
+                </span>
+            </div>
         </div>
-      </div>
-  
-      <div class="header__descripcion" >
-        <div class="header__descripcion-texto">
-          <h1 class="header__descripcion-titulo">"Conectamos destinos, unimos caminos"</h1>
-          <p class="header__descripcion-mensaje">
-            Nos dedicamos a proporcionar soluciones de transporte seguras, eficientes y confiables para cada uno de nuestros clientes
-          </p>
+        <!-- Aqui comienza lo de la img de fondo y el mensaje de la empresa -->
+        <div class="header__descripcion">
+            <div class="header__descripcion-texto">
+                <h1 class="header__descripcion-titulo">"Conectamos destinos, unimos caminos"</h1>
+                <p class="header__descripcion-mensaje">
+                    Nos dedicamos a proporcionar soluciones de transporte seguras, eficientes y confiables para cada uno
+                    de nuestros clientes
+                </p>
+            </div>
         </div>
-      </div>
-  
-      <LoginCliente :isVisible="showModalLogin" @cerrarModal="cerrarModalLogin" @mostrarRegister="mostrarModalRegister" />
-      <RegisterCliente :isVisible="showModalRegister" @cerrarModal="cerrarModalRegister" />
+        <!-- Los modal tanto para el login como para el registro -->
+        <LoginCliente :isVisible="showModalLogin" @cerrarModal="cerrarModalLogin"
+            @mostrarRegister="mostrarModalRegister" />
+        <RegisterCliente :isVisible="showModalRegister" @cerrarModal="cerrarModalRegister" />
     </header>
 </template>
-  
-  <script setup>
-  import { ref } from 'vue';
-  import { useRouter } from 'vue-router';
-  import LoginCliente from "../components/LoginCliente.vue";
-  import RegisterCliente from "../components/RegisterCliente.vue";
-  
-  const router = useRouter();
-  const showModalLogin = ref(false);
-  const showModalRegister = ref(false);
-  
-  const mostrarModalLogin = () => {
+
+<script setup>
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import LoginCliente from "../components/LoginCliente.vue";
+import RegisterCliente from "../components/RegisterCliente.vue";
+
+const router = useRouter();
+const showModalLogin = ref(false);
+const showModalRegister = ref(false);
+
+const mostrarModalLogin = () => {
     showModalLogin.value = true;
-  };
-  
-  const mostrarModalRegister = () => {
+};
+
+const mostrarModalRegister = () => {
     showModalRegister.value = true;
-  };
-  
-  const cerrarModalLogin = () => {
+};
+
+const cerrarModalLogin = () => {
     showModalLogin.value = false;
-  };
-  
-  const cerrarModalRegister = () => {
+};
+
+const cerrarModalRegister = () => {
     showModalRegister.value = false;
-  };
-  
-  const redirigirContacto = () => {
-    router.push('/contacto'); 
-  };
-  
-  const cerrarSesion = () => {
+};
+
+// falta implementar la logica para borrar las credenciales del inicio de sesion
+const cerrarSesion = () => {
     logout(); // Actualizar el estado de autenticación global
     router.push('/'); // Redirigir al inicio
-  };
-  
-  
-  </script>
-  
-  <style scoped>
- 
-  .header {
+};
+
+
+</script>
+
+<style scoped>
+.header {
     margin: 0;
     padding: 0;
 }
@@ -86,8 +82,7 @@
     justify-content: space-between
 }
 
-.header__nav-titulo 
-.nombre {
+.header__nav-titulo .nombre {
     text-decoration: none;
     margin-left: 3rem;
     font-size: 4rem;
@@ -106,6 +101,7 @@
 .header__iconos {
     height: 50px;
 }
+
 .header__descripcion {
     height: 40rem;
     background-image: url("../../public/images/1.jpg");
@@ -120,9 +116,9 @@
 
 .header__descripcion-titulo {
     text-align: center;
-    font-size: 3.5rem;    
+    font-size: 3.5rem;
     color: rgb(253, 253, 253);
-    
+
 }
 
 .header__descripcion-texto {
@@ -135,6 +131,7 @@
     justify-content: center;
     align-items: center;
 }
+
 .header__descripcion-mensaje {
     text-align: center;
     margin: 1rem;
@@ -142,21 +139,22 @@
     color: wheat;
 }
 
-.user {
+.icons {
+    color: white;
     font-size: 4rem;
     background-color: black;
-    color: white;
-    cursor:pointer;
+
+    cursor: pointer;
+
 }
+
 .container {
-  text-align: center;
-  margin-top: 30px;
-  margin-bottom: 30px;
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: 30px;
 }
 
-.info-icon{
-  font-size: 60px;
+.info-icon {
+    font-size: 60px;
 }
-
-  </style>
-  
+</style>

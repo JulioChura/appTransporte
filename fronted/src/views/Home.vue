@@ -1,78 +1,23 @@
 <script setup>
 import { ref } from 'vue';
-import LoginCliente from "../components/LoginCliente.vue";
-import RegisterCliente from "../components/RegisterCliente.vue";
 import Carrusel from '../components/Carrusel.vue';
 import Valores from '../components/Valores.vue';
-import { useRouter } from 'vue-router';
-const router = useRouter();
-const showModalLogin = ref(false);
-const showModalRegister = ref(false);
+import Header from '../components/Header.vue';
+import FooterVue from '../components/Footer.vue';
 
-const mostrarModalLogin = () => {
-  showModalLogin.value = true;
-};
-
-const mostrarModalRegister = () => {
-  showModalRegister.value = true;
-};
-
-const cerrarModalLogin = () => {
-  showModalLogin.value = false;
-};
-
-const cerrarModalRegister = () => {
-  showModalRegister.value = false;
-};
-
-const redirigirContacto = () => {
-  router.push('/contacto'); 
-};
 </script>
 
 <template>
-  <header class="header">
-    <div class="header__nav">
-      <h1 class="header__nav-titulo">
-        <a href="#" class="nombre">AQPTransporte</a>
-      </h1>
-      <div class="header__nav__enlaces">
-          <span class="material-symbols-outlined user" @click="redirigirContacto">
-            call
-          </span>
-          <span class="material-symbols-outlined user" @click="mostrarModalLogin">
-            account_circle
-          </span>
-          <span class="material-symbols-outlined user info-icon">
-            info
-          </span>
-      </div>
-    </div>
-
-    <div class="header__descripcion">
-      <div class="header__descripcion-texto">
-        <h1 class="header__descripcion-titulo">"Conectamos destinos, unimos caminos"</h1>
-        <p class="header__descripcion-mensaje">
-          Nos dedicamos a proporcionar soluciones de transporte seguras, eficientes y confiables para cada uno de nuestros clientes
-        </p>
-      </div>
-    </div>
-  </header>
-
-  <LoginCliente :isVisible="showModalLogin" @cerrarModal="cerrarModalLogin" @mostrarRegister="mostrarModalRegister" />
-  <RegisterCliente :isVisible="showModalRegister" @cerrarModal="cerrarModalRegister" />
-
+  <Header />
   <hr>
-
   <div class="container">
     <h2>¡Visita los lugares más fascinantes del Perú!</h2>
     <Carrusel />
   </div>
-
   <div class="container">
     <Valores />
   </div>
-  
+  <FooterVue />  
 </template>
   
   
