@@ -15,5 +15,8 @@ urlpatterns = [
     path('rutas/', RutaListView.as_view(), name='ruta_list'),
     path('registrar_viaje/', RegisterTripView.as_view(), name='register_trip'),
     path('clientes/<int:cliente_id>/historial/', HistoryTripView.as_view(), name='cliente-historial-viajes'),
+    
+    # debe ir a la rama principal este cambio
+    path('create_preference/<int:precio>/<str:ruta>/', create_preference, name='create_preference'),
 
 ]
