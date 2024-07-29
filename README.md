@@ -240,12 +240,12 @@
 ##  Servicios de la aplicacion
 
 * **Pagos usando la plataforma Mercado pago**
+* **Generación de vouchers en formato pdf**
+* **Envío de correos electrónicos**
 ![pago](https://github.com/JulioChura/appTransporte/blob/main/informe/pago.jpg)
 
-* **Generación de vouchers en formato pdf**
 ![voucher](https://github.com/JulioChura/appTransporte/blob/main/informe/comprobante.jpg)
 
-* **Envío de correos electrónicos**
 ![email](https://github.com/JulioChura/appTransporte/blob/main/informe/email.png)
 
 ##  Pasos para ejecutar el proyecto
