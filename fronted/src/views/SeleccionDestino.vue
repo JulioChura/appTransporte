@@ -4,7 +4,7 @@ import axios from 'axios';
 import Voucher from '../components/Voucher.vue'; 
 import Footer from '../components/Footer.vue'; 
 import MercadoPago from '../components/MercadoPago.vue';
-
+import Header from '../components/Header.vue';
 const username = ref(''); // Se obtiene el nombre de usuario de la ruta o de alguna otra manera
 const user = ref(null); // Datos del usuario
 const viajes = ref([]);
@@ -72,26 +72,11 @@ const getInitials = (firstName, lastName) => {
 
 
 <template>
-  <div class="page-container">
-    <header class="header">
-      <div class="header__nav">
-        <h1 class="header__nav-titulo">
-          <a href="#" class="nombre">AQPTransporte</a>
-        </h1>
-      </div>
+  
+    <Header /> 
 
-      <div class="header__descripcion">
-        <div class="header__descripcion-texto">
-          <h1 class="header__descripcion-titulo">Destinos</h1>
-          <p class="header__descripcion-mensaje">
-            Viaja con nosotros, Viaja seguro
-          </p>
-        </div>
-      </div>
-    </header>
-
-    <div class="profile-section">
-      <div class="profile-info">
+    <div class="perfil-contenedor">
+      <div class="perfil-izquierda">
         <div class="profile-avatar">
           <span class="avatar-initials">{{ getInitials(user?.Name, user?.LastName) }}</span> <!-- Muestra las iniciales del nombre del cliente -->
         </div>
@@ -101,18 +86,13 @@ const getInitials = (firstName, lastName) => {
         <p>DNI: {{ user?.DNI }}</p> <!-- Datos adicionales del cliente -->
         <!-- Botón para redirigir a PerfilUsuario.vue -->
         <router-link to="/perfil">
-          <button>Perfil</button>
-        </router-link>
+          <button class="btn-perfil">Ver historial de viajes</button>        </router-link>
       </div>
 
       <div class="travel-selection">
         <h1>Selecciona tu destino de viaje</h1>
         <div class="destinations">
-          <div 
-            v-for="viaje in viajes" 
-            :key="viaje.id" 
-            class="destination-card"
-          >
+          <div v-for="viaje in viajes" :key="viaje.id" class=" perfil-derecha">
             <div class="destination-info">
               <h2>{{ viaje.startingPlace }} - {{ viaje.destinationPlace }}</h2>
               <p>Distancia: {{ viaje.distance }} km</p>
@@ -122,7 +102,7 @@ const getInitials = (firstName, lastName) => {
               <p>Precio: S/{{ viaje.cost }}</p> <!-- Muestra el precio de la ruta -->
             </div>
 
-            <button @click="showPay(viaje)">Comprar</button> <!-- Botón para seleccionar -->
+            <button @click="showPay(viaje)" class="btn-viaje">Comprar</button> <!-- Botón para seleccionar -->
           </div>
         </div>
 
@@ -139,7 +119,6 @@ const getInitials = (firstName, lastName) => {
     </div>
     
     <Footer />
-  </div>
 </template>
 
 <style scoped>
@@ -150,62 +129,7 @@ const getInitials = (firstName, lastName) => {
   flex-direction: column;
 }
 
-/* Diseño de inicio */
-.header {
-    margin: 0;
-    padding: 0;
-}
 
-.header__nav {
-    background-color: black;
-    color: white;
-    display: flex;
-    justify-content: space-between;
-}
-
-.header__nav-titulo .nombre {
-    text-decoration: none;
-    margin-left: 3rem;
-    font-size: 4rem;
-    height: 5rem;
-    color: white;
-}
-
-.header__descripcion {
-    height: 40rem;
-    background-image: url("../../public/images/2.jpeg");
-    background-repeat: no-repeat;
-    background-size: cover;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-.header__descripcion-titulo {
-    text-align: center;
-    font-size: 3.5rem;    
-    color: rgb(253, 253, 253);
-}
-
-.header__descripcion-texto {
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
-    color: white;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-.header__descripcion-mensaje {
-    text-align: center;
-    margin: 1rem;
-    font-size: 3rem;
-    color: wheat;
-}
 
 /* Diseño para perfil y viajes */
 .profile-section {
@@ -274,8 +198,31 @@ const getInitials = (firstName, lastName) => {
 }
 
 /* Estilos del botón */
-button {
-  background-color: #007bff;
+.btn-perfil {
+  background-color: #000; /* Negro */
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 10px 0;
+  cursor: pointer;
+  border-radius: 5px;
+  flex-direction: column;
+
+
+  align-items: center;
+}
+
+.btn-perfil:hover {
+  background-color: #333; /* Gris oscuro al pasar el cursor */
+}
+
+/* Estilo para el botón de viaje */
+.btn-viaje {
+  background-color: #28a745; /* Verde */
   border: none;
   color: white;
   padding: 10px 20px;
@@ -288,8 +235,8 @@ button {
   border-radius: 5px;
 }
 
-button:hover {
-  background-color: #0056b3;
+.btn-viaje:hover {
+  background-color: #218838; /* Verde más oscuro al pasar el cursor */
 }
 
 /* Estilos del modal */
@@ -332,5 +279,37 @@ button:hover {
 /* Estilo del Footer */
 footer {
   margin-top: auto;
+}
+
+.perfil-contenedor {
+  margin: 30px;
+  display: flex;
+  padding: 20px;
+  background-color: #f0f0f0;
+  min-height: calc(100vh - 60px); 
+}
+
+.perfil-contenedor {
+  display: flex;
+  padding: 20px;
+  background-color: #f0f0f0;
+  min-height: calc(100vh - 60px); 
+}
+
+.perfil-izquierda {
+  flex: 1;
+  margin-right: 20px;
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.perfil-derecha {
+  flex: 2;
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 </style>

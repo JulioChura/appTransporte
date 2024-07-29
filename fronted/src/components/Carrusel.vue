@@ -28,6 +28,13 @@
         '../../public/carrusel/7.jpg',
         '../../public/carrusel/8.jpg',
         '../../public/carrusel/9.jpg',
+        '../../public/carrusel/10.jpg',
+        '../../public/carrusel/11.jpg',
+        '../../public/carrusel/12.jpg',
+        '../../public/carrusel/13.jpg',
+        '../../public/carrusel/14.jpg',
+        '../../public/carrusel/15.jpg',
+
       ]);
   
       const siguiente = () => {
@@ -56,7 +63,7 @@
 .carrusel {
   width: 100%;
   max-width: 100%;
-  height: 600px; 
+  height: 600px;
   overflow: hidden;
   position: relative;
   margin: 0 auto;
@@ -66,18 +73,25 @@
 .carrusel-imagenes {
   display: flex;
   transition: transform 0.5s ease;
+  height: 100%;
 }
 
 .carrusel-imagen {
   min-width: 100%;
-  height: 100%; 
-  box-sizing: border-box;
+  height: 100%;
+  flex-shrink: 0;
+  position: relative;
   overflow: hidden;
 }
 
 .carrusel-imagen img {
   width: 100%;
   height: 100%;
+  object-fit: cover;
   object-position: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 </style>

@@ -60,8 +60,8 @@ const closeModal = () => {
 </script>
 
 <template>
+  <Header />
   <div class="container">
-    <Header />
     <div class="perfil-contenedor">
       <div class="perfil-izquierda">
         <div class="perfil-info">
@@ -72,6 +72,10 @@ const closeModal = () => {
           <p><strong>DNI:</strong> {{ dni }}</p>
           <p><strong>Celular:</strong> {{ celular }}</p>
           <p><strong>Correo:</strong> {{ correo }}</p>
+          
+          <router-link :to="{ name: 'SeleccionDestino' }">
+            <button class="btn-redirigir">Ver viajes</button>
+          </router-link>
         </div>
       </div>
 
@@ -92,12 +96,12 @@ const closeModal = () => {
               <p><strong>Costo:</strong> ${{ voucher.cost }}</p>
               <p><strong>Creado:</strong> {{ formatDate(voucher.created_at) }}</p>
             </div>
-            <button @click="showVoucher(voucher)" type="button">Mostrar Recibo</button>
+            <button class="btn-recibo btn" @click="showVoucher(voucher)" type="button">Mostrar Recibo</button>
           </div>
         </div>
       </div>
     </div>
-    <Footer /> 
+     
     <div v-if="showModal" class="modal">
       <div class="modal-content">
         <span class="close" @click="closeModal">&times;</span>
@@ -105,8 +109,8 @@ const closeModal = () => {
       </div>
     </div>
   </div>
+  <Footer />
 </template>
-
 
 <style scoped>
 .container {
@@ -118,7 +122,7 @@ const closeModal = () => {
   display: flex;
   padding: 20px;
   background-color: #f0f0f0;
-  min-height: calc(100vh - 60px); /* Altura mínima restando la altura del header */
+  min-height: calc(100vh - 60px); 
 }
 
 .perfil-izquierda {
@@ -201,7 +205,8 @@ p {
   z-index: 1;
   left: 0;
   top: 0;
-
+  width: 100%;
+  height: 100%;
   overflow: auto;
   background-color: rgba(0,0,0,0.4);
 }
@@ -226,5 +231,45 @@ p {
   color: black;
   text-decoration: none;
   cursor: pointer;
+}
+
+.btn-recibo {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s;
+  cursor: pointer;
+  border: 1px solid transparent;
+  background-color: #0063d4; 
+  color: white;
+}
+
+.btn-recibo:hover {
+  background-color: #003e85;
+  color: white;
+}
+
+.btn-redirigir {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 5px;
+  background-color: #000000; 
+  color: white;
+  border: 1px solid transparent;
+  transition: background-color 0.3s, color 0.3s;
+  cursor: pointer;
+}
+
+.btn-redirigir:hover {
+  background-color: #0e0c0c; 
+  color: white;
 }
 </style>

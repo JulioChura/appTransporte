@@ -44,8 +44,8 @@ const cerrarSesion = () => {
                 <router-link to="/" class="nombre">AQPTransporte</router-link>
             </h1>
             <div class="header__nav__enlaces">
-                <router-link :to="{ name: 'SeleccionDestino' }" class="nav-button">Seleccionar Destino</router-link>
-                <router-link :to="{ name: 'PerfilUsuario' }" class="nav-button">Perfil Usuario</router-link>
+                <!-- <router-link :to="{ name: 'SeleccionDestino' }" class="nav-button">Seleccionar Destino</router-link>
+                <router-link :to="{ name: 'PerfilUsuario' }" class="nav-button">Perfil Usuario</router-link> -->
                 <router-link :to="{ name: 'SobreNosotros' }" class="nombre"><span
                         class="material-symbols-outlined icons call">info</span></router-link>
                 <router-link :to="{ name: 'contacto' }"> <span
@@ -55,8 +55,12 @@ const cerrarSesion = () => {
                     account_circle
                 </span>
                 <div v-else class="user-info">
-                    <span>{{ user.cliente.Name }}</span>
-                    <button @click="cerrarSesion">Cerrar sesión</button>
+                    
+                    <router-link :to="{ name: 'PerfilUsuario', params: { id: user.cliente.id } }" class="usuario-link">
+                        <span class="usuario-name">{{ user.cliente.Name }}</span>
+                    </router-link>
+
+                    <button @click="cerrarSesion" class="cerrar">Cerrar sesión</button>
                 </div>
             </div>
         </div>
@@ -165,4 +169,29 @@ const cerrarSesion = () => {
 .info-icon {
     font-size: 60px;
 }
+
+.cerrar {
+    margin-left: 10px;
+    margin-right: 10px; 
+    background-color: transparent;
+    border: 1px solid white;
+    color: white;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.usuario-link {
+    text-decoration: none;
+    color: white;
+    font-size: 20px;
+    margin-right: 10px;
+}
+
+.usuario-name {
+    font-size: 20px;
+    font-weight: bold;
+}
+
 </style>

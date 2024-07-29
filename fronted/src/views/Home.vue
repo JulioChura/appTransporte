@@ -22,6 +22,9 @@ import FooterVue from '../components/Footer.vue';
   
   
 <style scoped>
-   
+   .container {
+    margin: 0 auto;
+    text-align: center;
+  }
 </style>
 
