@@ -19,17 +19,14 @@ const rutaId = parseInt(route.query.ruta);
 const userId = parseInt(route.query.user_id);
 const cost = parseFloat(route.query.cost);
 
+const voucherData = ref(null);
+
 console.log("Parámetros recibidos:", rutaId, userId, cost);
 
 onMounted(async () => {
   // se debe vrifcar si ya se ha registrado el viaje en esta sesión
   const registrationKey = `trip_${rutaId}_${userId}`;
-
-  if (sessionStorage.getItem(registrationKey)) {
-    message.value = 'Este viaje ya ha sido registrado en esta sesión.';
-    return;
-  }
-
+  
   try {
     // Enviar los datos al back
     const response = await axios.post('http://localhost:8000/api/registrar_viaje/', {

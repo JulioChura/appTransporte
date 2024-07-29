@@ -4,10 +4,10 @@ import RegisterCliente from '../components/RegisterCliente.vue';
 import SeleccionDestino from '../views/SeleccionDestino.vue';
 import PerfilUsuario from '../views/PerfilUsuario.vue';
 import Contacto from '../views/Contacto.vue';
-import temporalPago
- from '../views/temporalPago.vue';
+import temporalPago from '../views/temporalPago.vue';
 import SobreNosotros from '../views/SobreNosotros.vue';
-// Definir las rutas
+import { getCurrentUser } from '../services/authService';
+
 const routes = [
   {
     path: '/',
@@ -25,7 +25,7 @@ const routes = [
     component: SeleccionDestino
   },
   {
-    path: '/perfil', // Nueva ruta para PerfilUsuario.vue
+    path: '/perfil',
     name: 'PerfilUsuario',
     component: PerfilUsuario
   },
@@ -34,15 +34,11 @@ const routes = [
     name: "contacto",
     component: Contacto
   },
-
-  // probar lo de la confirmacion de pago
   {
     path: "/registrado",
     name: "registradoViaje",
     component: temporalPago
   },
-
-  // va a la rama principal
   {
     path: "/sobreNosotros",
     name: "SobreNosotros",
@@ -50,10 +46,21 @@ const routes = [
   }
 ];
 
-// Crear y exportar el enrutador
 const router = createRouter({
   history: createWebHistory(),
   routes
+});
+
+router.beforeEach((to, from, next) => {
+  const publicPages = ['/', '/login', '/register', '/contacto', '/sobreNosotros'];
+  const authRequired = !publicPages.includes(to.path);
+  const loggedIn = getCurrentUser();
+
+  if (authRequired && !loggedIn) {
+    return next('/');
+  }
+
+  next();
 });
 
 export default router;

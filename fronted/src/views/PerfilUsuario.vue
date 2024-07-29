@@ -3,6 +3,8 @@ import { ref, onMounted } from 'vue';
 import axios from 'axios';
 import Header from '../components/Header.vue';
 import Footer from '../components/Footer.vue'; 
+import { getCurrentUser } from '../services/authService';
+import Voucher from '../components/Voucher.vue';
 
 const nombreUsuario = ref('');
 const apellidoUsuario = ref('');
@@ -10,14 +12,15 @@ const dni = ref('');
 const celular = ref('');
 const correo = ref('');
 const vouchers = ref([]);
+const showModal = ref(false);
+const selectedVoucher = ref(null);
+const storedUser = ref(null);
 
-// Función para obtener las iniciales del nombre del cliente
 const getInitials = (firstName, lastName) => {
   if (!firstName || !lastName) return '';
   return firstName.charAt(0) + lastName.charAt(0);
 };
 
-// Función para formatear la fecha
 const formatDate = (dateString) => {
   const options = { year: 'numeric', month: 'long', day: 'numeric' };
   return new Date(dateString).toLocaleDateString(undefined, options);
@@ -25,17 +28,17 @@ const formatDate = (dateString) => {
 
 onMounted(async () => {
   try {
-    // Obtener datos del usuario desde localStorage
-    const storedUser = JSON.parse(localStorage.getItem('user'));
-    if (storedUser) {
-      const userData = storedUser.cliente;
+    const currentUser = getCurrentUser();
+    if (currentUser) {
+      const userData = currentUser.cliente;
       nombreUsuario.value = userData.Name;
       apellidoUsuario.value = userData.LastName;
       dni.value = userData.DNI;
       celular.value = userData.Cellphone;
       correo.value = userData.email;
 
-      // Obtener historial de viajes del usuario
+      storedUser.value = currentUser; // Inicializar storedUser aquí
+
       const vouchersResponse = await axios.get(`http://localhost:8000/api/clientes/${userData.id}/historial/`);
       vouchers.value = vouchersResponse.data.vouchers;
     }
@@ -43,6 +46,17 @@ onMounted(async () => {
     console.error('Error fetching user data or vouchers:', error);
   }
 });
+
+const showVoucher = (voucher) => {
+  selectedVoucher.value = voucher;
+  showModal.value = true;
+};
+
+// Función para cerrar el modal
+const closeModal = () => {
+  showModal.value = false;
+  selectedVoucher.value = null;
+};
 </script>
 
 <template>
@@ -78,13 +92,21 @@ onMounted(async () => {
               <p><strong>Costo:</strong> ${{ voucher.cost }}</p>
               <p><strong>Creado:</strong> {{ formatDate(voucher.created_at) }}</p>
             </div>
+            <button @click="showVoucher(voucher)" type="button">Mostrar Recibo</button>
           </div>
         </div>
       </div>
     </div>
     <Footer /> 
+    <div v-if="showModal" class="modal">
+      <div class="modal-content">
+        <span class="close" @click="closeModal">&times;</span>
+        <Voucher v-if="storedUser && storedUser.cliente" :voucher="selectedVoucher" :user="storedUser.cliente" />
+      </div>
+    </div>
   </div>
 </template>
+
 
 <style scoped>
 .container {
@@ -168,5 +190,41 @@ p {
 
 .destination-info {
   text-align: left;
+}
+
+/* Estilos del modal */
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+
+  overflow: auto;
+  background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 40%;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
 }
 </style>

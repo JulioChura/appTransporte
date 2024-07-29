@@ -1,15 +1,23 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, reactive, provide } from 'vue';
 import axios from 'axios';
 import Voucher from '../components/Voucher.vue'; 
 import Footer from '../components/Footer.vue'; 
+import MercadoPago from '../components/MercadoPago.vue';
 
 const username = ref(''); // Se obtiene el nombre de usuario de la ruta o de alguna otra manera
 const user = ref(null); // Datos del usuario
 const viajes = ref([]);
-const voucherData = ref(null); // Datos del voucher
 const message = ref('');
 const showModal = ref(false); // Estado para mostrar el modal
+
+const userData = reactive({
+  cliente_id: null,
+  ruta_id: null,
+  cost: null,
+  origen: null,
+  destino: null
+});
 
 // Función para obtener los datos del usuario y los viajes
 onMounted(async () => {
@@ -30,30 +38,20 @@ onMounted(async () => {
 });
 
 // Función para seleccionar un destino
-const selectDestination = async (viaje) => {
-  let cost = parseFloat(viaje.cost);
-  console.log(cost);
-  try {
-    const userId = user.value?.id; // Recupera el id del usuario
+const showPay = (viaje) => {
+  const userId = user.value?.id; // Recupera el id del usuario
 
-    if (!userId) {
-      console.error('User ID not found');
-      return;
-    }
-    const response = await axios.post('http://localhost:8000/api/registrar_viaje/', {
-      cliente_id: userId,
-      ruta_id: viaje.id,
-      cost: cost
-    });
-
-    voucherData.value = response.data.voucher;
-    message.value = response.data.message;
-    showModal.value = true; // Muestra el modal
-
-  } catch (error) {
-    console.error('Error sending viaje selection:', error);
-    message.value = 'Error selecting destination: ' + (error.response ? error.response.data.error : error.message);
+  if (!userId) {
+    console.error('User ID not found');
+    return;
   }
+  userData.cliente_id = userId;
+  userData.ruta_id = viaje.id;
+  userData.cost = viaje.cost;
+  userData.origen = viaje.startingPlace;
+  userData.destino = viaje.destinationPlace;
+  
+  showModal.value = true; // Muestra el modal
 };
 
 // Función para cerrar el modal
@@ -61,12 +59,17 @@ const closeModal = () => {
   showModal.value = false; // Cierra el modal
 };
 
+// Proveer datos del usuario para otros componentes
+provide('userData', userData);
+
 // Función para obtener las iniciales del nombre del cliente
 const getInitials = (firstName, lastName) => {
   if (!firstName || !lastName) return '';
   return firstName.charAt(0) + lastName.charAt(0);
 };
 </script>
+
+
 
 <template>
   <div class="page-container">
@@ -118,7 +121,8 @@ const getInitials = (firstName, lastName) => {
               <p>Fecha: {{ viaje.fecha }}</p>
               <p>Precio: S/{{ viaje.cost }}</p> <!-- Muestra el precio de la ruta -->
             </div>
-            <button @click="selectDestination(viaje)">Reservar</button> <!-- Botón para seleccionar -->
+
+            <button @click="showPay(viaje)">Comprar</button> <!-- Botón para seleccionar -->
           </div>
         </div>
 
@@ -126,7 +130,9 @@ const getInitials = (firstName, lastName) => {
         <div v-if="showModal" class="modal">
           <div class="modal-content">
             <span class="close" @click="closeModal">&times;</span>
-            <Voucher :voucher="voucherData" :message="message" />
+            
+            <MercadoPago :message="message" />
+
           </div>
         </div>
       </div>

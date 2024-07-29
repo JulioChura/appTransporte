@@ -1,9 +1,8 @@
 <script setup>
 import { ref } from 'vue';
-import axios from 'axios';
+import { login } from '../services/authService';
 import { useRouter } from 'vue-router';
 
-// Props y emits
 const props = defineProps({
   isVisible: {
     type: Boolean,
@@ -12,46 +11,31 @@ const props = defineProps({
 });
 const emit = defineEmits(['cerrarModal', 'mostrarRegister']);
 
-// Estado reactivo
 const email = ref('');
 const password = ref('');
 const error = ref('');
 const message = ref('');
 const userLoggedIn = ref(false);
 
-// Configuración del router
 const router = useRouter();
 
-// Función para cerrar el modal
 const closeModal = () => {
   emit('cerrarModal');
 };
 
-// Función para enviar datos
 const loginUser = async () => {
   try {
-    // Envía una solicitud POST al backend con email y password
-    const response = await axios.post('http://localhost:8000/api/login/', {
-      email: email.value,
-      password: password.value
-    });
-    const user = response.data;
-    localStorage.setItem('user', JSON.stringify(user)); // Guarda el usuario en localStorage
+    const user = await login(email.value, password.value);
     userLoggedIn.value = true;
-    // Procesa la respuesta
-    const { name } = response.data;
-    userLoggedIn.value = true; // Marca al usuario como autenticado
-    message.value = 'Login successful!';
+    message.value = 'Inicio de sesión exitoso!';
     error.value = '';
-    // Redirigir a la página de viajes con el nombre de usuario
-    router.push({ name: 'SeleccionDestino', params: { username: name } }); //  decidir a donde se va ir si, al perfil o defrente a comprar el pasaje
+    router.push({ name: 'SeleccionDestino', params: { username: user.cliente.Name } });
   } catch (err) {
-    error.value = 'Login failed: ' + (err.response ? err.response.data.error : err.message);
+    error.value = 'Error de inicio de sesión: ' + (err.response ? err.response.data.error : err.message);
     message.value = '';
   }
 };
 
-// Función para mostrar el formulario de registro
 const mostrarRegister = () => {
   emit('mostrarRegister');
   closeModal();

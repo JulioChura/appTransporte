@@ -1,48 +1,18 @@
-<template>
-    <header class="header">
-        <!-- Barra de nav donde estan los iconos de sobreNosotros, Login, Contacto -->
-        <div class="header__nav">
-            <h1 class="header__nav-titulo">
-                <router-link to="/" class="nombre">AQPTransporte</router-link>
-            </h1>
-            <div class="header__nav__enlaces">
-
-                <router-link :to="{ name: 'SobreNosotros' }" class="nombre"><span
-                        class="material-symbols-outlined icons call">info</span></router-link>
-                <router-link :to="{ name: 'contacto' }"> <span
-                        class="material-symbols-outlined icons">call</span></router-link>
-
-                <span class="material-symbols-outlined icons" @click="mostrarModalLogin">
-                        account_circle
-                </span>
-            </div>
-        </div>
-        <!-- Aqui comienza lo de la img de fondo y el mensaje de la empresa -->
-        <div class="header__descripcion">
-            <div class="header__descripcion-texto">
-                <h1 class="header__descripcion-titulo">"Conectamos destinos, unimos caminos"</h1>
-                <p class="header__descripcion-mensaje">
-                    Nos dedicamos a proporcionar soluciones de transporte seguras, eficientes y confiables para cada uno
-                    de nuestros clientes
-                </p>
-            </div>
-        </div>
-        <!-- Los modal tanto para el login como para el registro -->
-        <LoginCliente :isVisible="showModalLogin" @cerrarModal="cerrarModalLogin"
-            @mostrarRegister="mostrarModalRegister" />
-        <RegisterCliente :isVisible="showModalRegister" @cerrarModal="cerrarModalRegister" />
-    </header>
-</template>
-
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import LoginCliente from "../components/LoginCliente.vue";
 import RegisterCliente from "../components/RegisterCliente.vue";
+import { getCurrentUser, logout } from '../services/authService';
 
 const router = useRouter();
 const showModalLogin = ref(false);
 const showModalRegister = ref(false);
+const user = ref(null);
+
+onMounted(() => {
+  user.value = getCurrentUser();
+});
 
 const mostrarModalLogin = () => {
     showModalLogin.value = true;
@@ -60,14 +30,50 @@ const cerrarModalRegister = () => {
     showModalRegister.value = false;
 };
 
-// falta implementar la logica para borrar las credenciales del inicio de sesion
 const cerrarSesion = () => {
-    logout(); // Actualizar el estado de autenticación global
-    router.push('/'); // Redirigir al inicio
+    logout();
+    user.value = null;
+    router.push('/');
 };
-
-
 </script>
+
+<template>
+    <header class="header">
+        <div class="header__nav">
+            <h1 class="header__nav-titulo">
+                <router-link to="/" class="nombre">AQPTransporte</router-link>
+            </h1>
+            <div class="header__nav__enlaces">
+                <router-link :to="{ name: 'SobreNosotros' }" class="nombre"><span
+                        class="material-symbols-outlined icons call">info</span></router-link>
+                <router-link :to="{ name: 'contacto' }"> <span
+                        class="material-symbols-outlined icons">call</span></router-link>
+
+                <span v-if="!user" class="material-symbols-outlined icons" @click="mostrarModalLogin">
+                    account_circle
+                </span>
+                <div v-else class="user-info">
+                    <span>{{ user.cliente.Name }}</span>
+                    <button @click="cerrarSesion">Cerrar sesión</button>
+                </div>
+            </div>
+        </div>
+        <div class="header__descripcion">
+            <div class="header__descripcion-texto">
+                <h1 class="header__descripcion-titulo">"Conectamos destinos, unimos caminos"</h1>
+                <p class="header__descripcion-mensaje">
+                    Nos dedicamos a proporcionar soluciones de transporte seguras, eficientes y confiables para cada uno
+                    de nuestros clientes
+                </p>
+            </div>
+        </div>
+        <LoginCliente :isVisible="showModalLogin" @cerrarModal="cerrarModalLogin"
+            @mostrarRegister="mostrarModalRegister" />
+        <RegisterCliente :isVisible="showModalRegister" @cerrarModal="cerrarModalRegister" />
+    </header>
+</template>
+
+
 
 <style scoped>
 .header {

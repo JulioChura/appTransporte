@@ -1,27 +1,58 @@
 import axios from 'axios';
 
-// Configura la URL de tu API Django
-const API_URL = 'http://localhost:8000/api/'; 
+const API_URL = 'http://localhost:8000/api/';
 
-// Función para login
-export const login = (email, password) => {
-    return axios.post(`${API_URL}clientes/login/`, {
-        email,
-        password
-    });
+export const login = async (email, password) => {
+    console.log('Attempting login with:', email);
+    try {
+        const response = await axios.post(`${API_URL}login/`, { email, password });
+        console.log('Login response:', response.data);
+        if (response.data.token) {
+            localStorage.setItem('user', JSON.stringify(response.data));
+            console.log('User data stored in localStorage');
+        }
+        return response.data;
+    } catch (error) {
+        console.error('Login error:', error.response ? error.response.data : error.message);
+        throw error;
+    }
 };
 
-// Almacenar token en localStorage
-export const setToken = (token) => {
-    localStorage.setItem('token', token);
-};
-
-// Obtener token de localStorage
-export const getToken = () => {
-    return localStorage.getItem('token');
-};
-
-// Eliminar token de localStorage
 export const logout = () => {
-    localStorage.removeItem('token');
+    console.log('Logging out user');
+    localStorage.removeItem('user');
 };
+
+export const register = async (userData) => {
+    console.log('Attempting to register user:', userData);
+    try {
+        const response = await axios.post(`${API_URL}register/`, userData);
+        console.log('Registration response:', response.data);
+        return response.data;
+    } catch (error) {
+        console.error('Registration error:', error.response ? error.response.data : error.message);
+        throw error;
+    }
+};
+
+export const getCurrentUser = () => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    console.log('Current user:', user);
+    return user;
+};
+
+axios.interceptors.request.use(
+    (config) => {
+        const user = getCurrentUser();
+        if (user && user.token) {
+            console.log('Adding token to request');
+            config.headers['Authorization'] = 'Token ' + user.token;
+        }
+        return config;
+    },
+    (error) => {
+        console.error('Request interceptor error:', error);
+        return Promise.reject(error);
+    }
+);
+
