@@ -44,6 +44,8 @@ const cerrarSesion = () => {
                 <router-link to="/" class="nombre">AQPTransporte</router-link>
             </h1>
             <div class="header__nav__enlaces">
+                <router-link :to="{ name: 'SeleccionDestino' }" class="nav-button">Seleccionar Destino</router-link>
+                <router-link :to="{ name: 'PerfilUsuario' }" class="nav-button">Perfil Usuario</router-link>
                 <router-link :to="{ name: 'SobreNosotros' }" class="nombre"><span
                         class="material-symbols-outlined icons call">info</span></router-link>
                 <router-link :to="{ name: 'contacto' }"> <span
