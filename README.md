@@ -184,7 +184,7 @@
 | updated_at    | DateTimeField        | No       | No        | Fecha actual       | Fecha y hora de la última actualización.      |
 
 ##  Diagrama Entidad-Relación
-![modeloFuncionamiento](./modelo.png)
+![modeloFuncionamiento](https://github.com/JulioChura/appTransporte/blob/main/informe/modelo.png)
 
 ##  Requerimiento del programa
     asgiref==3.8.1
@@ -225,7 +225,7 @@
     path('send-email/', SendPDFView.as_view(), name='send_email'),
 ]
 ```
-##  CRUD - Core Business - Clientes finales
+##  CRUD 
 * register/: Mediante este fragmento de URL se hace el registro de un nuevo cliente
 * login/: Esta dirección hace dos cosas: La primera es recepcionar un email y un password. La segunda cosa es que dichos datos se mandan al backend y se hace la valdiación, si las credenciales son correctas, se envía un token con el cual se podrán hacer peticiones
 * rutas/: Se hace uso de esta mediante el método GET. El backend nos devuelve todas las rutas que están disponibles
@@ -239,13 +239,13 @@
 
 ##  Servicios de la aplicacion
 * **Pagos usando la plataforma Mercado pago**
-![pago](../pago.jpg)
+![pago]([https://github.com/JulioChura/appTransporte/blob/main/informe/email.png](https://github.com/JulioChura/appTransporte/blob/main/informe/pago.jpg))
 
 * **Generación de vouchers en formato pdf**
-![voucher](../voucher.jpg)
+![voucher](https://github.com/JulioChura/appTransporte/blob/main/informe/voucher.jpg)
 
 * **Envío de correos electrónicos**
-![email](../email.png)
+![email](https://github.com/JulioChura/appTransporte/blob/main/informe/email.png)
 
 ##  Pasos para ejecutar el proyecto
    1. **Clonar el Repositorio**:
