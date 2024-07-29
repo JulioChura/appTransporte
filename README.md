@@ -243,7 +243,7 @@
 ![pago](https://github.com/JulioChura/appTransporte/blob/main/informe/pago.jpg)
 
 * **Generación de vouchers en formato pdf**
-![voucher](https://github.com/JulioChura/appTransporte/blob/main/informe/voucher.jpg)
+![voucher](https://github.com/JulioChura/appTransporte/blob/main/informe/comprobante.jpg)
 
 * **Envío de correos electrónicos**
 ![email](https://github.com/JulioChura/appTransporte/blob/main/informe/email.png)
@@ -294,9 +294,7 @@ Si estamos probando el proyecto en un entorno
 
 * Github del proyecto: https://github.com/JulioChura/appTransporte.git
 
-* Videos mostrando el coore del programa: 
-
-* https://youtube.com/playlist?list=PLJ6cSWA6BggJ_8lRj2VpoZctqs6ILHKbr&si=nf6fT_ED5fVE6lc8https://youtube.com/playlist?list=PLJ6cSWA6BggJ_8lRj2VpoZctqs6ILHKbr&si=nf6fT_ED5fVE6lc8
+* Videos mostrando el coore del programa: https://youtube.com/playlist?list=PLJ6cSWA6BggJ_8lRj2VpoZctqs6ILHKbr&si=nf6fT_ED5fVE6lc8https://youtube.com/playlist?list=PLJ6cSWA6BggJ_8lRj2VpoZctqs6ILHKbr&si=nf6fT_ED5fVE6lc8
 
 ## Conclusiones
 
