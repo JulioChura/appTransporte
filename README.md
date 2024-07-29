@@ -239,7 +239,7 @@
 
 ##  Servicios de la aplicacion
 * **Pagos usando la plataforma Mercado pago**
-![pago]([https://github.com/JulioChura/appTransporte/blob/main/informe/email.png](https://github.com/JulioChura/appTransporte/blob/main/informe/pago.jpg))
+![pago](https://github.com/JulioChura/appTransporte/blob/main/informe/email.png](https://github.com/JulioChura/appTransporte/blob/main/informe/pago.jpg)
 
 * **Generación de vouchers en formato pdf**
 ![voucher](https://github.com/JulioChura/appTransporte/blob/main/informe/voucher.jpg)
@@ -295,7 +295,7 @@ Si estamos probando el proyecto en un entorno
 
 * Videos mostrando el coore del programa: 
 
-* 
+* https://youtube.com/playlist?list=PLJ6cSWA6BggJ_8lRj2VpoZctqs6ILHKbr&si=nf6fT_ED5fVE6lc8https://youtube.com/playlist?list=PLJ6cSWA6BggJ_8lRj2VpoZctqs6ILHKbr&si=nf6fT_ED5fVE6lc8
 
 ## Conclusiones
 
