@@ -239,13 +239,13 @@
 
 ##  Servicios de la aplicacion
 * **Pagos usando la plataforma Mercado pago**
-![pago](/pago.jpg)
+![pago](pago.jpg)
 
 * **Generación de vouchers en formato pdf**
-![voucher](/voucher.jpg)
+![voucher](voucher.jpg)
 
 * **Envío de correos electrónicos**
-![email](/email.png)
+![email](email.png)
 
 ##  Pasos para ejecutar el proyecto
    1. **Clonar el Repositorio**:
