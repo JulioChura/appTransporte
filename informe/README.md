@@ -241,8 +241,11 @@
 * **Pagos usando la plataforma Mercado pago**
 ![pago](pago.jpg)
 
+
+
 * **Generación de vouchers en formato pdf**
 ![voucher](voucher.jpg)
+
 
 * **Envío de correos electrónicos**
 ![email](email.png)
